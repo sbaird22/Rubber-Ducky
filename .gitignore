@@ -1,0 +1,47 @@
+# Node Modules (Backend & Frontend)
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build Directories
+client/dist/
+server/build/
+
+# Environment Variables (Secrets)
+.env
+server/.env
+
+# Logs & Debugging
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vite & TypeScript Cache
+client/.vite/
+client/.turbo/
+client/.eslintcache/
+client/.parcel-cache/
+client/.next/
+client/.cache/
+server/.turbo/
+server/.eslintcache/
+
+# VS Code & Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS-Specific Files
+.DS_Store
+Thumbs.db
+
+# Generated Coverage Reports
+coverage/
+client/coverage/
+server/coverage/
+
+# Logs
+logs/
+*.log
+
