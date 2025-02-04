@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -13,9 +17,23 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/sbaird22/Rubber-Ducky/issues"
   },
-  "homepage": "https://github.com/sbaird22/Rubber-Ducky#readme"
+  "homepage": "https://github.com/sbaird22/Rubber-Ducky#readme",
+  "dependencies": {
+    "@types/react-icons": "^2.2.7",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.1",
+    "react": "^19.0.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3",
+    "vite": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "vite-plugin-svgr": "^3.0.0"
+  }
 }
