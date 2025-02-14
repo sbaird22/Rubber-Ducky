@@ -4,7 +4,7 @@ const About = () => {
   return (
     <section className="py-16 bg-gradient-to-r from-blue-50 to-blue-100" id="about">
       <div className="container mx-auto text-center">
-        <h2 className="text-4xl font-extrabold text-gray-800 mb-12">Features of Rubber Duck Debugging</h2>
+      <h2 className="text-4xl font-extrabold text-red-800 mb-12">Features of Rubber Duck Debugging</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           <div className="bg-white shadow-lg p-8 rounded-xl transform hover:scale-105 transition-all duration-300">
             <FaComments size={50} className="mx-auto text-indigo-500 mb-6" />
