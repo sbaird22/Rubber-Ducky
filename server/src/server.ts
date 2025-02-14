@@ -2,9 +2,12 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express'
 import { expressMiddleware } from 'apollo-server-express';
 import path from 'path';
-
+import dotenv from 'dotenv';
+import chatRoutes from './auth/routes/chatRoutes';
 import { typeDefs, resolvers } from './schemas/index.js';
 import db from './config/connection.js';
+
+dotenv.config();
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -18,6 +21,7 @@ const startApolloServer = async () => {
     
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
+    app.use('/api/chat', chatRoutes);
     app.use('/graphql', expressMiddleware(server));
     
 if(process.env.NODE_ENV === 'production'){
@@ -32,6 +36,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error'));
 app.listen(PORT, () => {
     console.log(`API server running on port ${PORT}.`)
     console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+    console.log(`REST API endpoint: http://localhost:${PORT}/api/chat`);
     });
 };
 
