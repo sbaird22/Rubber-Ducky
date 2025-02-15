@@ -2,7 +2,7 @@ import { Schema, model, Document } from 'mongoose';
 
 // Attempt subdocument Interface
 interface IAttempt extends Document {
-    description: string,
+    attemptDescription: string,
     isSuccess: boolean,
     createdAt: Date,
 };
@@ -10,7 +10,7 @@ interface IAttempt extends Document {
 // Bug interface
 interface IBug extends Document {
     title: string,
-    description: string,
+    bugDescription: string,
     createdAt: Date,
     createdBy: string,
     attempts: IAttempt[],
@@ -19,7 +19,7 @@ interface IBug extends Document {
 // Defining the schema for the Attempt subdocument
 const attemptSchema = new Schema<IAttempt>(
     {
-        description: {
+        attemptDescription: {
             type: String,
             required: true,
             minLength: 10,
@@ -46,7 +46,7 @@ const bugSchema = new Schema<IBug>(
             maxLength: 25,
             trim: true,
         },
-        description: {
+        bugDescription: {
             type: String,
             required: true,
             minLength: 10,
