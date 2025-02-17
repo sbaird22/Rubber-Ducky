@@ -10,7 +10,7 @@ const Login = () => {
   };
 
   return (
-    <section className="bg-gray-900 text-white p-16">
+    <section className="bg-gray-900 text-white p-16 ">
       <div className="max-w-md mx-auto bg-gray-800 p-8 rounded-xl shadow-lg">
         <h2 className="text-3xl font-extrabold text-yellow-300 text-center mb-6">Login</h2>
 
