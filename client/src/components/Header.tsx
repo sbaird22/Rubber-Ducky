@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { FaHamburger } from 'react-icons/fa';
+import { Link } from 'react-router-dom'; // Import Link from React Router
+import RubberDuckyImg from '../assets/Rubber_Ducky.png'; // Adjust the path if needed
+
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,19 +12,23 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-yellow-400 text-gray-800 p-4 shadow-md fixed w-full z-10">
+    <header className="bg-gray-900 text-white p-4 shadow-md fixed w-full z-10">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo Section */}
         <div className="flex items-center space-x-2">
-          <img src="/duck-icon.png" alt="Rubber Duck Logo" className="w-8 h-8" />
+          <img src={RubberDuckyImg}  alt="Rubber Duck Logo" className="w-8 h-8" />
           <span className="font-bold text-xl">Rubber Duck Debugging</span>
         </div>
 
         {/* Navbar Links */}
         <nav className="space-x-4 hidden md:flex">
-          <a href="#hero" className="text-lg hover:text-blue-600">Home</a>
-          <a href="#about" className="text-lg hover:text-blue-600">About</a>
-          <a href="#contact" className="text-lg hover:text-blue-600">Contact</a>
+          <Link to="/" className="text-lg hover:text-yellow-300">Home</Link>
+          <Link to="/about" className="text-lg hover:text-yellow-300">About</Link>
+          <Link to="/contact" className="text-lg hover:text-yellow-300">Contact</Link>
+          
+          {/* Login and Register Buttons */}
+          <Link to="/login" className="text-lg hover:text-yellow-300">Login</Link>
+          <Link to="/register" className="text-lg hover:text-yellow-300">Register</Link>
         </nav>
 
         {/* Mobile Hamburger Menu */}
@@ -33,11 +40,15 @@ const Header = () => {
       </div>
 
       {/* Mobile Menu */}
-      <div className={`md:hidden ${isOpen ? 'block' : 'hidden'} bg-blue-500 text-white py-4`}>
+      <div className={`md:hidden ${isOpen ? 'block' : 'hidden'} bg-gray-800 text-white py-4`}>
         <div className="flex flex-col items-center">
-          <a href="#hero" className="py-2">Home</a>
-          <a href="#about" className="py-2">About</a>
-          <a href="#contact" className="py-2">Contact</a>
+          <Link to="/" className="py-2 hover:text-yellow-300">Home</Link>
+          <Link to="/about" className="py-2 hover:text-yellow-300">About</Link>
+          <Link to="/contact" className="py-2 hover:text-yellow-300">Contact</Link>
+          
+          {/* Mobile Login and Register Links */}
+          <Link to="/login" className="py-2 hover:text-yellow-300">Login</Link>
+          <Link to="/register" className="py-2 hover:text-yellow-300">Register</Link>
         </div>
       </div>
     </header>
