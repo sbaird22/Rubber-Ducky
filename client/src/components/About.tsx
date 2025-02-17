@@ -14,12 +14,14 @@ const About = () => {
           <div className="bg-gray-800 shadow-lg p-8 rounded-xl transform hover:scale-105 transition-all duration-300 hover:bg-gray-700">
             <FaUser size={50} className="mx-auto text-yellow-200 mb-6" />
             <h3 className="text-2xl font-semibold text-yellow-200 mb-3">Collaborative</h3>
-            <p className="text-gray-400 text-lg">Discuss your issue with others to brainstorm solutions together.</p>
+            <p className="text-gray-400 text-lg">
+              Discuss your issue with others to brainstorm solutions together and track your progress over time. Share your coding bugs, collaborate on solutions, and improve as a developer.
+            </p>
           </div>
           <div className="bg-gray-800 shadow-lg p-8 rounded-xl transform hover:scale-105 transition-all duration-300 hover:bg-gray-700">
             <FaBook size={50} className="mx-auto text-yellow-200 mb-6" />
             <h3 className="text-2xl font-semibold text-yellow-200 mb-3">Learning Resource</h3>
-            <p className="text-gray-400 text-lg">Use the experience to learn and grow as a developer through reflection.</p>
+            <p className="text-gray-400 text-lg">Use the experience to learn and grow as a developer through reflection and continuous improvement.</p>
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ const Testimonials = () => {
         {/* Add the link to the submit testimonial page */}
         <div className="mb-8">
           <Link
-            to="/submit-testimonial" // Link to the testimonial submission page
+            to="/testimonials" // Link to the testimonial submission page
             className="bg-yellow-400 text-gray-800 py-2 px-6 rounded-lg text-xl hover:bg-yellow-300"
           >
             Submit Your Testimonial
