@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FaTrashAlt, FaEdit } from 'react-icons/fa';
+import RubberDuckyImg from '../assets/Rubber_Ducky.png';
 
 const BugPage = () => {
   const [notes, setNotes] = useState<string[]>([]);
@@ -34,19 +35,19 @@ const BugPage = () => {
         {/* Left Section: Rubber Duck + AI Interaction */}
         <div className="bg-gray-800 p-8 rounded-xl shadow-lg">
           <div className="flex justify-center mb-8">
-            <img src="/rubber-duck.png" alt="Rubber Duck" className="w-32 h-32" />
+            <img src={RubberDuckyImg} alt="Rubber Duck" className="w-32 h-32" />
           </div>
           <h3 className="text-2xl font-semibold text-yellow-400 mb-4">Ask the Rubber Duck</h3>
           <textarea
             value={aiQuery}
             onChange={(e) => setAiQuery(e.target.value)}
             placeholder="Describe your bug..."
-            className="w-full p-4 text-gray-800 rounded-lg mb-4"
+            className="w-full p-4 text-gray-300 rounded-lg mb-4 border-2 border-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300"
             rows={4}
           />
           <button
             onClick={askAi}
-            className="bg-yellow-400 text-gray-800 px-6 py-2 rounded-lg text-xl hover:bg-yellow-300"
+            className="bg-yellow-400 text-gray-800 px-6 py-2 rounded-lg text-xl hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300"
           >
             Ask AI
           </button>
@@ -70,11 +71,11 @@ const BugPage = () => {
               value={newNote}
               onChange={(e) => setNewNote(e.target.value)}
               placeholder="Add a new note..."
-              className="w-full p-4 text-gray-800 rounded-lg"
+              className="w-full p-4 text-gray-300 rounded-lg border-2 border-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300"
             />
             <button
               onClick={addNote}
-              className="bg-yellow-400 text-gray-800 px-6 py-2 rounded-lg text-xl hover:bg-yellow-300"
+              className="bg-yellow-400 text-gray-800 px-6 py-2 rounded-lg text-xl hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300"
             >
               Add
             </button>
@@ -83,7 +84,7 @@ const BugPage = () => {
           {/* Sort Button */}
           <button
             onClick={sortNotes}
-            className="bg-yellow-400 text-gray-800 px-6 py-2 rounded-lg text-xl hover:bg-yellow-300 mb-6"
+            className="bg-yellow-400 text-gray-800 px-6 py-2 rounded-lg text-xl hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300 mb-6"
           >
             Sort Notes
           </button>
@@ -92,7 +93,10 @@ const BugPage = () => {
           <div className="space-y-4">
             {notes.length > 0 ? (
               notes.map((note, index) => (
-                <div key={index} className="flex justify-between items-center bg-gray-700 p-4 rounded-lg">
+                <div
+                  key={index}
+                  className="flex justify-between items-center bg-gray-700 p-6 rounded-lg shadow-xl transform hover:scale-105 transition-all duration-300"
+                >
                   <div className="text-gray-300 text-lg">{note}</div>
                   <div className="flex space-x-4">
                     <button

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { FaHamburger } from 'react-icons/fa';
 import { Link } from 'react-router-dom'; // Import Link from React Router
+import RubberDuckyImg from '../assets/Rubber_Ducky.png'; // Adjust the path if needed
+
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +16,7 @@ const Header = () => {
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo Section */}
         <div className="flex items-center space-x-2">
-          <img src="https://media.discordapp.net/attachments/1009075678592913420/1340864485958877234/Rubber_Ducky.png?ex=67b3e8dd&is=67b2975d&hm=77c925ae4287f5b84b8f5da05ca2e4e8552797c56b4d0c234a742611151badae&=&format=webp&quality=lossless&width=746&height=746" alt="Rubber Duck Logo" className="w-8 h-8" />
+          <img src={RubberDuckyImg}  alt="Rubber Duck Logo" className="w-8 h-8" />
           <span className="font-bold text-xl">Rubber Duck Debugging</span>
         </div>
 
