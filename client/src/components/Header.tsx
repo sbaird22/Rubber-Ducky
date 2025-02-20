@@ -23,7 +23,6 @@ const Header = () => {
         {/* Navbar Links */}
         <nav className="space-x-4 hidden md:flex">
           <Link to="/" className="text-lg hover:text-yellow-300">Home</Link>
-          <Link to="/about" className="text-lg hover:text-yellow-300">About</Link>
           <Link to="/contact" className="text-lg hover:text-yellow-300">Contact</Link>
           
           {/* Login and Register Buttons */}

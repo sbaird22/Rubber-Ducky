@@ -1,24 +1,36 @@
-import { Request, Response } from "express";
-import axios from "axios";
+import { Request, Response } from 'express';
+import axios from 'axios';
 
 export const generateText = async (req: Request, res: Response) => {
   try {
+    // Check if the prompt is provided
     const { prompt } = req.body;
+    if (!prompt) {
+      return res.status(400).json({ error: 'Prompt is required' });
+    }
+
     const response = await axios.post(
-      "https://api.openai.com/v1/chat/completions",
+      'https://api.openai.com/v1/chat/completions',
       {
-        model: "gpt-4",
-        messages: [{ role: "user", content: prompt }],
+        model: 'gpt-4',
+        messages: [{ role: 'user', content: prompt }],
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
         },
       }
     );
-    res.json({ response: response.data.choices[0].message.content });
+
+    // Check if the response has choices and the message content
+    if (response.data.choices && response.data.choices.length > 0) {
+      return res.json({ response: response.data.choices[0].message.content });
+    } else {
+      return res.status(500).json({ error: 'No AI response received' });
+    }
   } catch (error) {
-    res.status(500).json({ error: "AI request failed" });
+    console.error('Error in AI request:', error);
+    return res.status(500).json({ error: 'AI request failed' });
   }
 };
