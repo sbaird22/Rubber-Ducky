@@ -1,7 +1,13 @@
 import User, { IUser } from '../models/User';
 import { generateToken } from '../utils/jwtUtil';
+import mongoose from 'mongoose';
 
-export const registerUser = async (username: string, email: string, password: string) => {
+
+export const registerUser = async (
+    username: string,
+    email: string,
+    password: string
+): Promise<{ id: string; username: string; email: string; token: string }> => {
     const existingUser = await User.findOne({ email });
     if (existingUser) throw new Error('User already exists');
 
@@ -9,24 +15,31 @@ export const registerUser = async (username: string, email: string, password: st
     await newUser.save();
 
     return {
-    id: newUser._id,
+    id: String(newUser._id),
     username: newUser.username,
     email: newUser.email,
-    token: generateToken(newUser._id.toString()),
+    token: generateToken(String(newUser._id)),
     };
 };
 
-export const loginUser = async (email: string, password: string) => {
+/**
+ * Logs in a user and returns a JWT.
+ */
+export const loginUser = async (
+    email: string,
+    password: string
+): Promise<{ id: string; username: string; email: string; token: string }> => {
     const user = await User.findOne({ email });
-    if (!user || !(await user.comparePassword(password))) throw new Error('Invalid credentials');
+    if (!user || !(await user.isCorrectPassword(password))) throw new Error('Invalid credentials');
 
     return {
-    id: user._id,
+    id: String(user._id), 
     username: user.username,
     email: user.email,
-    token: generateToken(user._id.toString()),
+    token: generateToken(String(user._id)),
     };
 };
+
 
 
 
