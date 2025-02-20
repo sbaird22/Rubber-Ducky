@@ -1,5 +1,5 @@
 import { Bug, User } from '../models/index.js';
-import { signToken, AuthenticationError } from '../utils/auth/auth.js' //NEED AUTH FROM FROM A UTIL FOLDER
+import { signToken, AuthenticationError } from '../utils/auth/auth.js' 
 
 // Define argument types
 interface AddUserArgs {
