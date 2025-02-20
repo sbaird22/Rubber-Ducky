@@ -29,6 +29,8 @@ const attemptSchema = new Schema<IAttempt>(
             type: Boolean,
             required: true,
         },
+    },
+    {
         _id: false,
         toJSON: { getters: true},
         toObject: { getters: true },
