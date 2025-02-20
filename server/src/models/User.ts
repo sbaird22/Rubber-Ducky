@@ -1,55 +1,37 @@
-import { Schema, model, Document } from 'mongoose';
+import mongoose, { Schema, Document, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 
-// User interface
-interface IUser extends Document {
+
+export interface IUser extends Document {
+    _id: mongoose.Types.ObjectId; 
     username: string;
     email: string;
     password: string;
-    bugs: Schema.Types.ObjectId[];
     isCorrectPassword(password: string): Promise<boolean>;
 }
 
-// User schema
+
 const userSchema = new Schema<IUser>(
     {
-        username: {
-            type: String,
-            required: true,
-            unique: true,
-            trim: true
-        },
-        email: {
-            type: String,
-            required: true,
-            minLength: 5,
-        },
-        bugs: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Bug',
-            },
-        ],
+    username: { type: String, required: true, unique: true, trim: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true, minlength: 8 },
     },
-    {
-        timestamps: true,
-        toJSON: { getters: true},
-        toObject: { getters: true },
-    }
+    { timestamps: true }
 );
 
+
 userSchema.pre<IUser>('save', async function (next) {
-    if (this.isNew || this.isModified('password')) {
-        const saltRounds = 10;
-        this.password = await bcrypt.hash(this.password, saltRounds);
-    }
+    if (!this.isModified('password')) return next();
+    this.password = await bcrypt.hash(this.password, 10);
     next();
 });
+
 
 userSchema.methods.isCorrectPassword = async function (password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
 };
 
-const User = model<IUser>('User', userSchema);
 
+const User = model<IUser>('User', userSchema);
 export default User;
