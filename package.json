@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
-    "client": "vite",  
-    "server": "nodemon server/src/server.ts",  
+    "client": "vite",
+    "server": "nodemon server/src/server.ts",
     "build": "vite build",
     "serve": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -48,9 +48,9 @@
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^7.6.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3",
-    "vite-plugin-svgr": "^3.0.0",
-    "concurrently": "^7.0.0"
+    "vite-plugin-svgr": "^3.0.0"
   }
 }
