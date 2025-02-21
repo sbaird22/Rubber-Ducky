@@ -42,7 +42,7 @@ const startApolloServer = async () => {
   server.applyMiddleware({ app });
 
   // Use custom chat API route
-  app.use('/api/chat', chatRoutes);  // Corrected route to '/api/chat'
+  app.use('/generateText', chatRoutes);  // Corrected route to '/api/chat'
 
   // Handle production environment (serving static files)
   if (process.env.NODE_ENV === 'production') {
@@ -56,7 +56,7 @@ const startApolloServer = async () => {
   app.listen(PORT, () => {
     console.log(`API server running on port ${PORT}.`);
     console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
-    console.log(`REST API endpoint: http://localhost:${PORT}/api/chat`);
+    console.log(`REST API endpoint: http://localhost:${PORT}/generateText`);  // Corrected route to '/generateText'
   });
 };
 
