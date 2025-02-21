@@ -1,19 +1,36 @@
 import jwt from 'jsonwebtoken';
+import { GraphQLError } from 'graphql';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const generateToken = (id: string): string => {
-    return jwt.sign({ id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+export const signToken = (username: string, email: string, _id: unknown) => {
+    const payload = { username, email, _id };
+    const secretKey: any = process.env.JWT_SECRET_KEY;
+    return jwt.sign({data: payload}, secretKey, {expiresIn: '1h'});
 };
 
-const verifyToken = (token: string): any => {
-    try {
-        return jwt.verify(token, process.env.JWT_SECRET as string);
-    } catch (error) {
-        return null;
+export const authernticateToken = ({req}: any) => {
+    let token = req.body.token || req.query.token || req.headers.authorization;
+    if(req.headers.authorization){
+        token = token.split(' ').pop().trim();
+    };
+    if(!token){
+        return req;
+    }
+    try{
+        const {data}: any = jwt.verify(token, process.env.JWT_SECRET_KET || '', {maxAge: '1h'});
+        req.user = data;
+    }catch (err) {
+        console.log('Invalid Token.');
+    }
+    return req;
+};
+
+export class AuthenticationError extends GraphQLError {
+    constructor(message: string) {
+        super(message, undefined, undefined, undefined, ['UNAUTHENITCATED']);
+        Object.defineProperty(this, 'name', {value: 'AuthenticationError'})
     }
 };
-
-export { generateToken, verifyToken };
-
-
 
 // If we want to add refresh tokens we will need to extend this file
