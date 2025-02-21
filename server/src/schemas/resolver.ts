@@ -1,5 +1,5 @@
 import { Bug, User } from '../models/index.js';
-import { signToken, AuthenticationError } from '../utils/auth/auth.js' 
+import { signToken, AuthenticationError } from '../utils/auth.js' 
 
 // Define argument types
 interface AddUserArgs {
@@ -56,15 +56,6 @@ const resolvers = {
         bug: async (_parent: any, { bugId }: BugArgs) => {
             return await Bug.findOne({_id: bugId});
         },
-        // Query for the authenticated user's info ('me' query relies on context to verify auth)
-        me: async (_parent: any, _args: any, context: any) => {
-            // If authenticated, returns info + thoughts
-            if(context.user) {
-                return User.findOne({_id: context.user._id}).populate('bugs');
-            }
-            // Throw authentication error if not authenticated
-            throw new AuthenticationError('Could not authenticate user.');
-        },
     },
     Mutation: {
         addUser: async (_parent: any, { input }: AddUserArgs) => {
@@ -103,7 +94,7 @@ const resolvers = {
                 );
                 return bug;
             };
-            throw AuthenticationError('Log in harder');
+            throw AuthenticationError('Authentication failed.');
         },
         addAttempt: async (_parent: any, { bugId, attemptDescription, isSuccess }: AddAttemptArgs, context: any) => {
             if(context.user){
@@ -120,7 +111,7 @@ const resolvers = {
                     }
                 );
             };
-            throw AuthenticationError('You are not logged in?????');
+            throw AuthenticationError('Authentication failed.');
         },
         removeBug: async (_parent: any { bugId }: BugArgs, context: any) => {
             if(context.user){
@@ -130,7 +121,7 @@ const resolvers = {
                 });
 
                 if(!bug){
-                    throw AuthenticationError('Could not authenticate');
+                    throw AuthenticationError('Could not authenticate.');
                 };
 
                 await User.findOneAndUpdate(
@@ -139,7 +130,7 @@ const resolvers = {
                 );
                 return bug;
             }
-            throw AuthenticationError('Auth failed');
+            throw AuthenticationError('Authentication failed');
         },
 
         removeAttempt: async (_parent: any { bugId, attemptId }: RemoveAttemptArgs, context: any) => {
