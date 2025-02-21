@@ -94,7 +94,7 @@ const resolvers = {
                 );
                 return bug;
             };
-            throw AuthenticationError('Authentication failed.');
+            throw AuthenticationError;
         },
         addAttempt: async (_parent: any, { bugId, attemptDescription, isSuccess }: AddAttemptArgs, context: any) => {
             if(context.user){
@@ -111,7 +111,7 @@ const resolvers = {
                     }
                 );
             };
-            throw AuthenticationError('Authentication failed.');
+            throw AuthenticationError;
         },
         removeBug: async (_parent: any, { bugId }: BugArgs, context: any) => {
             if(context.user){
@@ -121,7 +121,7 @@ const resolvers = {
                 });
 
                 if(!bug){
-                    throw AuthenticationError('Could not authenticate.');
+                    throw AuthenticationError;
                 };
 
                 await User.findOneAndUpdate(
@@ -130,7 +130,7 @@ const resolvers = {
                 );
                 return bug;
             }
-            throw AuthenticationError('Authentication failed');
+            throw AuthenticationError;
         },
 
         removeAttempt: async (_parent: any, { bugId, attemptId }: RemoveAttemptArgs, context: any) => {
@@ -148,7 +148,7 @@ const resolvers = {
                     { new: true }
                 );
             }
-            throw AuthenticationError('Authentication error');
+            throw AuthenticationError;
         },
     },
 };
