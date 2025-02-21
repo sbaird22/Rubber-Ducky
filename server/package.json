@@ -26,6 +26,7 @@
     "mongoose": "^8.9.5"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/axios": "^0.9.36",
     "@types/jsonwebtoken": "^9.0.8",
     "eslint": "^9.19.0",
