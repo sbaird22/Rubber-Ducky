@@ -1,5 +1,5 @@
 import User, { IUser } from '../models/User';
-import { generateToken } from '../utils/jwtUtil';
+import { signToken } from '../utils/auth';
 import mongoose from 'mongoose';
 
 
@@ -18,7 +18,7 @@ export const registerUser = async (
     id: String(newUser._id),
     username: newUser.username,
     email: newUser.email,
-    token: generateToken(String(newUser._id)),
+    token: signToken(String(newUser._id), String(newUser.email), String(newUser._id) ),
     };
 };
 
@@ -36,7 +36,7 @@ export const loginUser = async (
     id: String(user._id), 
     username: user.username,
     email: user.email,
-    token: generateToken(String(user._id)),
+    token: signToken(String(user._id), String(user.email), String(user._id) ),
     };
 };
 
