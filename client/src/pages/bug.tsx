@@ -57,7 +57,7 @@ const BugPage = () => {
   
     try {
       setAiResponse('Loading...'); // Set AI response to loading state before sending request.
-      const response = await axios.post('/routes/generateText', { prompt: aiQuery });
+      const response = await axios.get('/routes/generateText', { prompt: aiQuery });
       setAiResponse(response.data.response); // Set AI response in the state
       setAiQuery(''); // Reset query input
     } catch (error) {
