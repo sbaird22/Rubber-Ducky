@@ -1,9 +1,5 @@
 import { Bug, User } from '../models/index.js';
-<<<<<<< HEAD
-import { signToken, AuthenticationError } from '../services/authService.js' 
-=======
 import { signToken, AuthenticationError } from '../utils/auth.js' 
->>>>>>> 77497cd238752066706e1968d6da40a4fc7635d8
 
 // Define argument types
 interface AddUserArgs {
