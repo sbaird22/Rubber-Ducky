@@ -1,25 +1,25 @@
 const typeDefs = `
     type User {
-        _id: ID
-        username: string
-        email: String
-        password: string
+        _id: ID!
+        username: String!
+        email: String!
+        password: String!
         bugs: [Bug]!
     }
     
     type Bug {
-        _id: ID
-        title: String
-        bugDescription: String
-        createdAt: string
-        createdBy: String
+        _id: ID!
+        title: String!
+        bugDescription: String!
+        createdAt: String!
+        createdBy: String!
         attempts: [Attempt]!
     }
     
     type Attempt {
-        _id: ID
-        attemptDescription: String
-        createdAt: String
+        _id: ID!
+        attemptDescription: String!
+        createdAt: String!
     }
     
     input BugInput {
@@ -40,10 +40,10 @@ const typeDefs = `
     }
         
     type Query {
-        users: [User]
+        users: [User]!
         user(username: String!): User
         bugs: [Bug]!
-        bug(bugIdl ID!): Bug
+        bug(bugId: ID!): Bug
         me: User
     }
         
