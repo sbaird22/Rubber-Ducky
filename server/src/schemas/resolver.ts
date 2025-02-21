@@ -113,7 +113,7 @@ const resolvers = {
             };
             throw AuthenticationError('Authentication failed.');
         },
-        removeBug: async (_parent: any { bugId }: BugArgs, context: any) => {
+        removeBug: async (_parent: any, { bugId }: BugArgs, context: any) => {
             if(context.user){
                 const bug = await Bug.findOneAndDelete({
                     _id: bugId,
@@ -133,7 +133,7 @@ const resolvers = {
             throw AuthenticationError('Authentication failed');
         },
 
-        removeAttempt: async (_parent: any { bugId, attemptId }: RemoveAttemptArgs, context: any) => {
+        removeAttempt: async (_parent: any, { bugId, attemptId }: RemoveAttemptArgs, context: any) => {
             if(context.user){
                 return Bug.findOneAndUpdate(
                     {_id: bugId},
