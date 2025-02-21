@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const authController_1 = require("../controllers/authController");
+const router = (0, express_1.Router)();
+router.post('/register', authController_1.register);
+router.post('/login', authController_1.login);
+exports.default = router;
+// Server.ts file 
+// import express from 'express';
+// import dotenv from 'dotenv';
+// import cors from 'cors';
+// import connectDB from './config/db';
+// import authRoutes from './auth/routes/authRoutes';
+// dotenv.config();
+// const app = express();
+// app.use(express.json());
+// app.use(cors());
+// connectDB();
+// app.use('/api/auth', authRoutes);
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));

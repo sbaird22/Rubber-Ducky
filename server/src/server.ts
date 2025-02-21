@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import chatRoutes from './routes/chatRoutes'; 
 import { typeDefs, resolvers } from './schemas';  // Ensure correct import for typeDefs and resolvers
-import db from './config/db';  // Ensure the correct MongoDB connection import
+import connectDB from './config/db';  // Import your connectDB function
 
 dotenv.config();
 
@@ -13,10 +13,13 @@ dotenv.config();
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+// Connect to MongoDB
+connectDB();  // Call connectDB() to establish a connection
+
 // Initialize ApolloServer with GraphQL schema
 const server = new ApolloServer({
-  typeDefs,    // Correctly named 'typeDefs' for the Apollo server
-  resolvers,   // Correctly named 'resolvers'
+  typeDefs,    // Corrected to lowercase 'typeDefs'
+  resolvers,   // Corrected to lowercase 'resolvers'
 });
 
 // Start Apollo Server
@@ -39,7 +42,7 @@ const startApolloServer = async () => {
   server.applyMiddleware({ app });
 
   // Use custom chat API route
-  app.use('./routes/chatRoutes', chatRoutes);
+  app.use('/api/chat', chatRoutes);  // Corrected route to '/api/chat'
 
   // Handle production environment (serving static files)
   if (process.env.NODE_ENV === 'production') {
@@ -48,9 +51,6 @@ const startApolloServer = async () => {
       res.sendFile(path.join(__dirname, '../client/dist/index.html'));
     });
   }
-
-  // MongoDB connection error handling
-  db.on('error', console.error.bind(console, 'MongoDB connection error'));
 
   // Start the server
   app.listen(PORT, () => {

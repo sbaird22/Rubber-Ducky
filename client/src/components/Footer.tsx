@@ -42,7 +42,7 @@ const Footer = () => {
               <a href="https://github.com/Kristy-H-Thompson" target="_blank" rel="noopener noreferrer" className="text-yellow-400 hover:text-yellow-300">
                 <FaGithub size={24} />
               </a>
-              <a href="https://linkedin.com/in/your-linkedin-username3" target="_blank" rel="noopener noreferrer" className="text-yellow-400 hover:text-yellow-300">
+              <a href="https://www.linkedin.com/in/kristy-thompson-372990243/" target="_blank" rel="noopener noreferrer" className="text-yellow-400 hover:text-yellow-300">
                 <FaLinkedin size={24} />
               </a>
             </div>
@@ -50,7 +50,7 @@ const Footer = () => {
 
           {/* Team Member 4 */}
           <div className="bg-gray-800 p-6 rounded-lg text-center">
-            <h3 className="text-xl font-semibold text-yellow-300 mb-4">Shane</h3>
+            <h3 className="text-xl font-semibold text-yellow-300 mb-4">Shane Baird</h3>
             <div className="flex justify-center space-x-4">
               <a href="https://github.com/sbaird22" target="_blank" rel="noopener noreferrer" className="text-yellow-400 hover:text-yellow-300">
                 <FaGithub size={24} />

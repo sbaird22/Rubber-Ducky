@@ -1,6 +1,15 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
 
+// Define the expected structure of the response from OpenAI API
+interface OpenAIResponse {
+  choices: Array<{
+    message: {
+      content: string;
+    };
+  }>;
+}
+
 export const generateText = async (req: Request, res: Response) => {
   try {
     // Check if the prompt is provided
@@ -9,7 +18,8 @@ export const generateText = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Prompt is required' });
     }
 
-    const response = await axios.post(
+    // Make the API request and type the response
+    const response = await axios.post<OpenAIResponse>(
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-4',
