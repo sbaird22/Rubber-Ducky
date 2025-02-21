@@ -1,4 +1,4 @@
-import Bug from './Bug.js';
-import User from './User.js';
+import Bug from './Bug';
+import User from './User';
 
 export { Bug, User };
