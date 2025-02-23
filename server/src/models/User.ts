@@ -6,6 +6,7 @@ export interface IUser extends Document {
     username: string;
     email: string;
     password: string;
+    bugs: Schema.Types.ObjectId[];
     isCorrectPassword(password: string): Promise<boolean>;
 }
 
@@ -13,15 +14,20 @@ export interface IUser extends Document {
 const userSchema = new Schema<IUser>(
     {
     username: { type: String, required: true, unique: true, trim: true },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true, match: [/.+@.+\..+/, 'Must match an email address!'] },
     password: { type: String, required: true, minlength: 8 },
+    bugs: [ {type: Schema.Types.ObjectId, ref: 'Bug', } ]
     },
-    { timestamps: true }
+    {
+        timestamps: true,
+        toJSON: {getters: true},
+        toObject: {getters: true},
+    },
 );
 
 
 userSchema.pre<IUser>('save', async function (next) {
-    if (!this.isModified('password')) return next();
+    if (this.isNew || !this.isModified('password')) return next();
     this.password = await bcrypt.hash(this.password, 10);
     next();
 });
