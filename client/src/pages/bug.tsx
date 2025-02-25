@@ -9,7 +9,6 @@ const BugPage = () => {
   const [aiResponse, setAiResponse] = useState<string>('');
   const [aiQuery, setAiQuery] = useState<string>('');
   const [isListening, setIsListening] = useState<boolean>(false);
-  // Removed bugTitle input state as you no longer need it here
 
   // Function to handle Speech Input and AI Response
   const handleVoiceInput = () => {
@@ -17,11 +16,10 @@ const BugPage = () => {
       window.SpeechRecognition || (window as any).webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
 
-    recognition.continuous = true; // Make it listen until stopped
+    recognition.continuous = true;
     recognition.lang = 'en-US';
-    recognition.interimResults = false; // Only get final results
+    recognition.interimResults = false;
 
-    // Start listening when the button is pressed
     if (!isListening) {
       recognition.start();
       setIsListening(true);
@@ -54,15 +52,14 @@ const BugPage = () => {
       setAiResponse('Please enter a description.');
       return;
     }
-  
-    try {
-      setAiResponse('Loading...'); // Set AI response to loading state before sending request.
-      console.log('Sending to AI:', aiQuery);
-      const response = await axios.get('/api/generateText',{params: { prompt: aiQuery }});
-      console.log(response.data.response);  
-      setAiResponse(response.data.response); // Set AI response in the state
-      setAiQuery(''); // Reset query input
 
+    try {
+      setAiResponse('Loading...');
+      console.log('Sending to AI:', aiQuery);
+      const response = await axios.get('/api/generateText', { params: { prompt: aiQuery } });
+      console.log(response.data.response);
+      setAiResponse(response.data.response); 
+      setAiQuery('');
     } catch (error) {
       console.error('Error fetching AI response:', error);
       setAiResponse('Sorry, there was an error processing your request.');
@@ -80,6 +77,33 @@ const BugPage = () => {
     setNotes(notes.filter((_, i) => i !== index));
   };
 
+  // Function to render AI response with basic styling (for Markdown-like formatting)
+  const renderAIResponse = (response: string) => {
+    return response
+      .replace(/### (.*?)\n/g, '<h4 class="text-xl font-semibold text-yellow-400">$1</h4>') // Headers
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold">$1</strong>') // Bold Text
+      .replace(/`(.*?)`/g, '<code class="bg-gray-800 text-yellow-400 p-1 rounded">$1</code>') // Inline code
+      .replace(/- (.*?)(\n|$)/g, '<li class="list-disc pl-5">$1</li>') // Lists
+      .replace(/\n/g, '<br />'); // Newlines to <br> for line breaks
+  };
+
+  // Function to read the AI response aloud
+  const readAIResponse = () => {
+    if (aiResponse) {
+      const speech = new SpeechSynthesisUtterance(aiResponse);
+      speech.lang = 'en-US';
+      speech.rate = 1; // Normal speed
+      speech.pitch = 1; // Normal pitch
+      speech.volume = 1; // Max volume
+      window.speechSynthesis.speak(speech);
+    }
+  };
+
+  // Function to stop speech synthesis if it's currently reading
+  const stopReading = () => {
+    window.speechSynthesis.cancel();
+  };
+
   return (
     <section className="py-16 bg-gray-900 text-white">
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
@@ -89,10 +113,7 @@ const BugPage = () => {
             <img src={RubberDuckyImg} alt="Rubber Duck" className="w-32 h-32" />
           </div>
           <h3 className="text-2xl font-semibold text-yellow-400 mb-4">Ask the Rubber Duck</h3>
-          
-          {/* No need for Bug Title input anymore */}
-          
-          {/* AI Query Textarea */}
+
           <textarea
             value={aiQuery}
             onChange={(e) => setAiQuery(e.target.value)}
@@ -100,8 +121,7 @@ const BugPage = () => {
             className="w-full p-4 text-gray-300 rounded-lg mb-4 border-2 border-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300"
             rows={4}
           />
-          
-          {/* Button Container for Ask AI and Start/Stop Listening */}
+
           <div className="flex space-x-4">
             <button
               onClick={sendToAI}
@@ -119,9 +139,27 @@ const BugPage = () => {
           </div>
 
           {aiResponse && (
-            <div className="mt-6 bg-gray-700 p-6 rounded-lg">
-              <h4 className="text-xl font-semibold text-yellow-400">AI Response:</h4>
-              <p className="text-gray-300">{aiResponse}</p>
+            <div>
+              <div
+                className="mt-6 bg-gray-700 p-6 rounded-lg"
+                dangerouslySetInnerHTML={{ __html: renderAIResponse(aiResponse) }}
+              />
+
+              {/* Text-to-Speech Controls */}
+              <div className="mt-6 flex space-x-4">
+                <button
+                  onClick={readAIResponse}
+                  className="bg-yellow-400 text-gray-800 px-6 py-2 rounded-lg text-xl hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300"
+                >
+                  Read Aloud
+                </button>
+                <button
+                  onClick={stopReading}
+                  className="bg-red-400 text-gray-800 px-6 py-2 rounded-lg text-xl hover:bg-red-300 focus:outline-none focus:ring-2 focus:ring-red-300"
+                >
+                  Stop Reading
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -130,7 +168,6 @@ const BugPage = () => {
         <div className="bg-gray-800 p-8 rounded-xl shadow-lg">
           <h3 className="text-2xl font-semibold text-yellow-400 mb-4">Your Bug Notes</h3>
 
-          {/* Notes Input */}
           <div className="flex space-x-4 mb-8">
             <input
               type="text"
@@ -147,7 +184,6 @@ const BugPage = () => {
             </button>
           </div>
 
-          {/* Notes List */}
           <div className="space-y-4">
             {notes.length > 0 ? (
               notes.map((note, index) => (
