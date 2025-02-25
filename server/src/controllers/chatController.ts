@@ -12,8 +12,8 @@ interface OpenAIResponse {
 export const generateText = async (req: Request, res: Response) => {
   try {
     // Check if the prompt is provided
-    const { aiQuery} = req.body;
-    if (!aiQuery) {
+    const { prompt} = req.query;
+    if (!prompt) {
       return res.status(400).json({ error: 'Prompt is required' });
     }
 
@@ -22,7 +22,7 @@ export const generateText = async (req: Request, res: Response) => {
       'https://openrouter.ai/api/v1/chat/completions',
       {
         model: 'cognitivecomputations/dolphin3.0-r1-mistral-24b:free',
-        messages: [{ role: 'user', content: aiQuery }],
+        messages: [{ role: 'user', content: prompt }],
       },
       {
         headers: {

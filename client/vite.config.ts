@@ -9,4 +9,13 @@ export default defineConfig({
   build: {
     outDir: 'dist', // Ensure the build output is directed to 'dist' folder
   },
-});
+  server: {
+      open: true,
+      proxy: {
+        '/api': {
+          target: 'http://localhost:3001',
+          changeOrigin: true,
+          secure: false,
+        }
+      }
+    }});

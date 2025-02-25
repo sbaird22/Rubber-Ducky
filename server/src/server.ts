@@ -38,7 +38,7 @@ const startApolloServer = async () => {
   }));
 
   // Use custom chat API route first (for non-GraphQL requests)
-  app.use('/generateText', chatRoutes);  // Ensure this is before the Apollo middleware
+  app.use('/api/generateText', chatRoutes);  // Ensure this is before the Apollo middleware
 
   // Apollo Server Middleware (attaching Apollo server to Express)
   server.applyMiddleware({ app });
