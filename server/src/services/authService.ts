@@ -1,5 +1,5 @@
-import User, { IUser } from '../models/User';
-import { signToken } from '../utils/auth';
+import User, { IUser } from '../models/User.js';
+import { signToken } from '../utils/auth.js';
 import mongoose from 'mongoose';
 
 

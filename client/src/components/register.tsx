@@ -8,33 +8,35 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+  
     if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
     }
-
-    // Send user data to the backend
+  
     const userData = {
       username,
       email,
       password
     };
-
+  
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch('http://localhost:3001/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(userData),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         console.log('Registration successful:', data);
-        // You can redirect to login page or show a success message
+        // Store the JWT in localStorage
+        localStorage.setItem('token', data.token);
+        // Optionally, redirect the user to the login page or a protected route
+        // window.location.href = '/dashboard'; // example redirect
       } else {
         console.error('Registration failed:', data.message);
         alert(data.message);
@@ -44,6 +46,7 @@ const Register = () => {
       alert('An error occurred. Please try again later.');
     }
   };
+  
 
   return (
     <section className="bg-gray-900 text-white p-16">
