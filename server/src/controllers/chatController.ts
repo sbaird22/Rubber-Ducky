@@ -20,9 +20,9 @@ export const generateText = async (req: Request, res: Response) => {
 
     // Make the API request and type the response
     const response = await axios.post<OpenAIResponse>(
-      'https://api.openai.com/v1/chat/completions',
+      'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'gpt-4',
+        model: 'cognitivecomputations/dolphin3.0-r1-mistral-24b:free',
         messages: [{ role: 'user', content: prompt }],
       },
       {
