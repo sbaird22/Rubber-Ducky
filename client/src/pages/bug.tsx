@@ -56,10 +56,12 @@ const BugPage = () => {
     }
   
     try {
-      setAiResponse('Loading...'); // Set AI response to loading state before sending request.
-      const response = await axios.get('/routes/generateText', { prompt: aiQuery });
-      setAiResponse(response.data.response); // Set AI response in the state
-      setAiQuery(''); // Reset query input
+      setAiResponse('Loading...');
+      
+      const response = await axios.post('http://localhost:3001/generateText', { prompt: aiQuery });
+      
+      setAiResponse(response.data.response);
+      setAiQuery('');
     } catch (error) {
       console.error('Error fetching AI response:', error);
       setAiResponse('Sorry, there was an error processing your request.');
