@@ -3,9 +3,9 @@ import { ApolloServer } from 'apollo-server-express';
 import path from 'path';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import chatRoutes from './routes/chatRoutes'; 
-import { typeDefs, resolvers } from './schemas';  // Ensure correct import for typeDefs and resolvers
-import connectDB from './config/db';  // Import your connectDB function
+import chatRoutes from './routes/chatRoutes.js'; 
+import { typeDefs, resolvers } from './schemas/index.js';  // Ensure correct import for typeDefs and resolvers
+import connectDB from './config/db.js';  // Import your connectDB function
 
 dotenv.config();
 
