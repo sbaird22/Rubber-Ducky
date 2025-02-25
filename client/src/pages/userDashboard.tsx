@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const UserDashboard = () => {
@@ -7,18 +8,27 @@ const UserDashboard = () => {
     email: 'johndoe@example.com',
   };
 
-  const ongoingBugs = [
+  const [ongoingBugs, setOngoingBugs] = useState([
     { id: 1, title: 'Bug in login form', description: 'Unable to submit the login form in some cases.' },
     { id: 2, title: 'UI glitch on dashboard', description: 'Some UI elements overlap on the dashboard page.' },
-  ];
+  ]);
 
-  const solvedBugs = [
+  const [solvedBugs, setSolvedBugs] = useState([
     { id: 3, title: 'Broken link on homepage', description: 'The “Contact Us” link was broken but fixed now.' },
-  ];
+  ]);
 
   // Counts
   const ongoingCount = ongoingBugs.length;
   const solvedCount = solvedBugs.length;
+
+  // Delete function with explicit types
+  const deleteBug = (bugId: number, isOngoing: boolean): void => {
+    if (isOngoing) {
+      setOngoingBugs(ongoingBugs.filter(bug => bug.id !== bugId));
+    } else {
+      setSolvedBugs(solvedBugs.filter(bug => bug.id !== bugId));
+    }
+  };
 
   return (
     <section className="py-16 bg-gray-900 text-white">
@@ -57,9 +67,17 @@ const UserDashboard = () => {
                   key={bug.id}
                   className="bg-gray-800 p-6 rounded-xl shadow-lg hover:bg-gray-700 transition-all"
                 >
-                  <Link to={`/bug/${bug.id}`} className="text-xl font-semibold text-yellow-400">
-                    {bug.title}
-                  </Link>
+                  <div className="flex justify-between items-center">
+                    <Link to={`/bug/${bug.id}`} className="text-xl font-semibold text-yellow-400">
+                      {bug.title}
+                    </Link>
+                    <button
+                      onClick={() => deleteBug(bug.id, true)}
+                      className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-400"
+                    >
+                      Delete
+                    </button>
+                  </div>
                   <p className="text-gray-400 text-lg">{bug.description}</p>
                 </div>
               ))}
@@ -75,9 +93,17 @@ const UserDashboard = () => {
                   key={bug.id}
                   className="bg-gray-800 p-6 rounded-xl shadow-lg hover:bg-gray-700 transition-all"
                 >
-                  <Link to={`/bug/${bug.id}`} className="text-xl font-semibold text-yellow-400">
-                    {bug.title}
-                  </Link>
+                  <div className="flex justify-between items-center">
+                    <Link to={`/bug/${bug.id}`} className="text-xl font-semibold text-yellow-400">
+                      {bug.title}
+                    </Link>
+                    <button
+                      onClick={() => deleteBug(bug.id, false)}
+                      className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-400"
+                    >
+                      Delete
+                    </button>
+                  </div>
                   <p className="text-gray-400 text-lg">{bug.description}</p>
                 </div>
               ))}
@@ -90,4 +116,3 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
-

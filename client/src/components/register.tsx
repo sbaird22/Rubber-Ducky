@@ -1,13 +1,48 @@
 import { useState } from 'react';
 
 const Register = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {  // Explicitly typing 'e'
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle registration logic here
+    
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    // Send user data to the backend
+    const userData = {
+      username,
+      email,
+      password
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Registration successful:', data);
+        // You can redirect to login page or show a success message
+      } else {
+        console.error('Registration failed:', data.message);
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred. Please try again later.');
+    }
   };
 
   return (
@@ -16,6 +51,18 @@ const Register = () => {
         <h2 className="text-3xl font-extrabold text-yellow-300 text-center mb-6">Register</h2>
 
         <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="username" className="block text-lg text-gray-400 mb-2">Username</label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full p-3 bg-gray-700 text-white rounded-lg"
+              required
+            />
+          </div>
+
           <div className="mb-4">
             <label htmlFor="email" className="block text-lg text-gray-400 mb-2">Email</label>
             <input
