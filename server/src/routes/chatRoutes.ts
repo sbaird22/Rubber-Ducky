@@ -1,5 +1,5 @@
 import express from 'express';
-import { generateText } from '../controllers/chatController';
+import { generateText } from '../controllers/chatController.js';
 
 const router = express.Router();
 
