@@ -62,6 +62,7 @@ const BugPage = () => {
       console.log(response.data.response);  
       setAiResponse(response.data.response); // Set AI response in the state
       setAiQuery(''); // Reset query input
+
     } catch (error) {
       console.error('Error fetching AI response:', error);
       setAiResponse('Sorry, there was an error processing your request.');

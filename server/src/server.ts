@@ -3,9 +3,9 @@ import { ApolloServer } from 'apollo-server-express';
 import path from 'path';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import chatRoutes from './routes/chatRoutes.js'; 
-import { typeDefs, resolvers } from './schemas/index.js';  // Ensure correct import for typeDefs and resolvers
-import connectDB from './config/db.js';  // Import your connectDB function
+import chatRoutes from './routes/chatRoutes.js';
+import { typeDefs, resolvers } from './schemas/index.js'; // Ensure correct import for typeDefs and resolvers
+import connectDB from './config/db.js'; // Import your connectDB function
 
 dotenv.config();
 
@@ -22,7 +22,6 @@ const server = new ApolloServer({
   resolvers,   // Corrected to lowercase 'resolvers'
 });
 
-// Start Apollo Server
 const startApolloServer = async () => {
   // Start the Apollo server
   await server.start();
@@ -38,11 +37,11 @@ const startApolloServer = async () => {
     allowedHeaders: ['Content-Type', 'Authorization'],
   }));
 
+  // Use custom chat API route first (for non-GraphQL requests)
+  app.use('/generateText', chatRoutes);  // Ensure this is before the Apollo middleware
+
   // Apollo Server Middleware (attaching Apollo server to Express)
   server.applyMiddleware({ app });
-
-  // Use custom chat API route
-  app.use('/generateText', chatRoutes);  // Corrected route to '/api/chat'
 
   // Handle production environment (serving static files)
   if (process.env.NODE_ENV === 'production') {
