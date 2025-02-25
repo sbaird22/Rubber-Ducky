@@ -1,6 +1,6 @@
 import connectDB from "../config/db.js";
 import { Bug, User } from '../models/index.js';
-import cleanDB from "./cleanDB";
+import cleanDB from "./cleanDB.js";
 import userData from './userData.json' with {type: 'json'};
 import bugData from './bugData.json' with {type: 'json'};
 

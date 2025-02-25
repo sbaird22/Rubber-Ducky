@@ -3,12 +3,12 @@
         "title": "Computer won't start",
         "bugDescription": "I hit power button and thing don't turn on",
         "createdBy": "testerOne"
-    }
+    },
     {
         "title": "Index out of bounds",
         "bugDescription": "Looping through my Users list keeps failing.",
         "createdBy": "testerOne"
-    }
+    },
     {
         "title": "Null reference",
         "bugDescription": "My list of users are returning null.",
