@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,7 +23,7 @@ const Register = () => {
     };
   
     try {
-      const response = await fetch('http://localhost:3001/register', {
+      const response = await fetch('http://localhost:3001/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,6 +37,7 @@ const Register = () => {
         console.log('Registration successful:', data);
         // Store the JWT in localStorage
         localStorage.setItem('token', data.token);
+        navigate('/dashboard');
         // Optionally, redirect the user to the login page or a protected route
         // window.location.href = '/dashboard'; // example redirect
       } else {

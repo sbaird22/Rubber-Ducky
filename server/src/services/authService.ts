@@ -8,6 +8,7 @@ export const registerUser = async (
     email: string,
     password: string
 ): Promise<{ id: string; username: string; email: string; token: string }> => {
+
     const existingUser = await User.findOne({ email });
     if (existingUser) throw new Error('User already exists');
 
@@ -18,7 +19,7 @@ export const registerUser = async (
     id: String(newUser._id),
     username: newUser.username,
     email: newUser.email,
-    token: signToken(String(newUser._id), String(newUser.email), String(newUser._id) ),
+    token: signToken(String(newUser.username), String(newUser.email), String(newUser._id) ),
     };
 };
 
@@ -36,7 +37,7 @@ export const loginUser = async (
     id: String(user._id), 
     username: user.username,
     email: user.email,
-    token: signToken(String(user._id), String(user.email), String(user._id) ),
+    token: signToken(user.username, user.email, String(user._id)),
     };
 };
 

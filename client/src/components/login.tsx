@@ -1,18 +1,46 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate(); 
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {  // Explicitly typing 'e'
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {  // Explicitly typing 'e'
     e.preventDefault();
     // Handle login logic here
+    const userData = { email, password };
+
+    try {
+      const response = await fetch('http://localhost:3001/api/auth/login', { // Fixed API endpoint
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Login successful:', data);
+        localStorage.setItem('token', data.token); // Store JWT token
+        navigate('/userDashboard'); // Redirect to dashboard
+      } else {
+        console.error('Login failed:', data.message);
+        setError(data.message || 'Invalid credentials'); // Display error message
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setError('An error occurred. Please try again later.');
+    }
   };
 
   return (
     <section className="bg-gray-900 text-white p-16 ">
       <div className="max-w-md mx-auto bg-gray-800 p-8 rounded-xl shadow-lg">
         <h2 className="text-3xl font-extrabold text-yellow-300 text-center mb-6">Login</h2>
+
+          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">

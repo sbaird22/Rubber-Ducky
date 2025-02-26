@@ -3,7 +3,7 @@ import { ApolloServer } from 'apollo-server-express';
 import path from 'path';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import auth from './routes/authRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 import chatRoutes from './routes/chatRoutes.js';
 import { typeDefs, resolvers } from './schemas/index.js';
 import connectDB from './config/db.js';
@@ -34,7 +34,7 @@ const startApolloServer = async () => {
     allowedHeaders: ['Content-Type', 'Authorization'],
   }));
 
-  app.use('/auth', auth);  // Mount the authentication routes
+  app.use('/api/auth', authRoutes);  // Mount the authentication routes
   app.use('/api/generateText', chatRoutes);
 
   // Apollo Server Middleware
