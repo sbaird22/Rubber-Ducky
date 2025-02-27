@@ -25,16 +25,16 @@ export const login = async (req: Request, res: Response) => {
 export const getUser = async (req: Request, res: Response) => {
     try {
         if (!req.user || !req.user._id) {
+            console.error("User not found in request");
             return res.status(401).json({ message: "Unauthorized, invalid token" });
         }
-        const { id } = req.params;
-        const user = await User.findById(id).select('-password'); // Exclude password
+        const user = await User.findById(req.user._id).select('-password'); // Exclude password
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
         res.status(200).json(user);
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error' });
     }
 };
 

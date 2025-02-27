@@ -14,9 +14,12 @@ const UserDashboard = () => {
   const [error, setError] = useState<string>('');
 
   const getProfile = (): DecodedToken | null => {
+    console.log("getProfile called");
     const token = localStorage.getItem("token");
     if (!token) return null;
+    console.log("Token found:", token);
     try {
+      console.log("Decoding token:", token);
       return jwtDecode<DecodedToken>(token); // Explicitly set type
     } catch (error) {
       console.error("Error decoding token:", error);
@@ -40,7 +43,7 @@ const UserDashboard = () => {
 
       try {
         // Fetch user information
-        const userResponse = await fetch(`http://localhost:3001/api/auth/user`, {
+        const userResponse = await fetch(`http://localhost:3001/api/auth/user/${decodedToken._id}`, {
 
           method: 'GET',
           headers: {

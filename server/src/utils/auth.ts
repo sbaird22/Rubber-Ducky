@@ -39,7 +39,6 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     } else {
         return res.status(401).json({ message: "Invalid Token" });
     }
-    next(); // Proceed to next middleware
     } catch (err) {
     return res.status(401).json({ message: "Invalid Token" });
     }
