@@ -1,27 +1,65 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const UserDashboard = () => {
-  // Sample data (replace with actual user data from your backend)
-  const user = {
-    username: 'johndoe',
-    email: 'johndoe@example.com',
-  };
+  // State to hold user data, bugs, and error
+  const [user, setUser] = useState<any>(null);
+  const [ongoingBugs, setOngoingBugs] = useState<any[]>([]);
+  const [solvedBugs, setSolvedBugs] = useState<any[]>([]);
+  const [error, setError] = useState<string>('');
 
-  const [ongoingBugs, setOngoingBugs] = useState([
-    { id: 1, title: 'Bug in login form', description: 'Unable to submit the login form in some cases.' },
-    { id: 2, title: 'UI glitch on dashboard', description: 'Some UI elements overlap on the dashboard page.' },
-  ]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('No token found, please log in');
+        return;
+      }
 
-  const [solvedBugs, setSolvedBugs] = useState([
-    { id: 3, title: 'Broken link on homepage', description: 'The “Contact Us” link was broken but fixed now.' },
-  ]);
+      try {
+        // Fetch user information
+        const userResponse = await fetch('http://localhost:3001/api/user', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`, // Send token in headers
+          },
+        });
+
+        if (!userResponse.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+
+        const userData = await userResponse.json();
+        setUser(userData);
+
+        // Fetch bugs data
+        const bugsResponse = await fetch('http://localhost:3001/api/bugs', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`, // Send token in headers
+          },
+        });
+
+        if (!bugsResponse.ok) {
+          throw new Error('Failed to fetch bugs data');
+        }
+
+        const bugsData = await bugsResponse.json();
+        setOngoingBugs(bugsData.filter((bug: any) => !bug.isSolved));
+        setSolvedBugs(bugsData.filter((bug: any) => bug.isSolved));
+      } catch (error) {
+        setError('An error occurred. Please try again later.');
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Counts
   const ongoingCount = ongoingBugs.length;
   const solvedCount = solvedBugs.length;
 
-  // Delete function with explicit types
   const deleteBug = (bugId: number, isOngoing: boolean): void => {
     if (isOngoing) {
       setOngoingBugs(ongoingBugs.filter(bug => bug.id !== bugId));
@@ -29,6 +67,14 @@ const UserDashboard = () => {
       setSolvedBugs(solvedBugs.filter(bug => bug.id !== bugId));
     }
   };
+
+  if (error) {
+    return <div className="text-center text-red-500">{error}</div>;
+  }
+
+  if (!user) {
+    return <div>Loading...</div>; // Show loading state while fetching data
+  }
 
   return (
     <section className="py-16 bg-gray-900 text-white">
@@ -116,3 +162,4 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
+

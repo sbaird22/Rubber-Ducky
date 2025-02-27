@@ -7,26 +7,33 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate(); 
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {  // Explicitly typing 'e'
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle login logic here
     const userData = { email, password };
-
+  
     try {
-      const response = await fetch('http://localhost:3001/api/auth/login', { // Fixed API endpoint
+      const response = await fetch('http://localhost:3001/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
       });
-
+  
       const data = await response.json();
-
+      console.log('Login response:', response);  // Log the whole response
+      console.log('Response status text:', response.statusText);  // Status text might provide more info
+      console.log('Response data:', data);  // Log the actual response data
+  
       if (response.ok) {
         console.log('Login successful:', data);
+
+        // Save JWT token and user information to localStorage
         localStorage.setItem('token', data.token); // Store JWT token
-        navigate('/userDashboard'); // Redirect to dashboard
+        localStorage.setItem('user', JSON.stringify(data.user)); // Store user data
+        
+        // Redirect to user dashboard
+        navigate('/dashboard'); // Redirect to dashboard
       } else {
-        console.error('Login failed:', data.message);
+        console.error('Login failed:', data.message || 'Invalid credentials');
         setError(data.message || 'Invalid credentials'); // Display error message
       }
     } catch (error) {
@@ -40,7 +47,7 @@ const Login = () => {
       <div className="max-w-md mx-auto bg-gray-800 p-8 rounded-xl shadow-lg">
         <h2 className="text-3xl font-extrabold text-yellow-300 text-center mb-6">Login</h2>
 
-          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
