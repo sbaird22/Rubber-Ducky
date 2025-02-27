@@ -1,12 +1,29 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { type JwtPayload, jwtDecode } from 'jwt-decode';
+
+interface DecodedToken extends JwtPayload {
+  _id: string;
+  username: string;
+  email: string;
+}
 
 const UserDashboard = () => {
   // State to hold user data, bugs, and error
   const [user, setUser] = useState<any>(null);
-  const [ongoingBugs, setOngoingBugs] = useState<any[]>([]);
-  const [solvedBugs, setSolvedBugs] = useState<any[]>([]);
   const [error, setError] = useState<string>('');
+
+  const getProfile = () => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    try {
+      return jwtDecode<DecodedToken>(token); // Explicitly set type
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return null;
+    }
+  }
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,58 +32,36 @@ const UserDashboard = () => {
         setError('No token found, please log in');
         return;
       }
+      const decodedToken = getProfile();
+      if (!decodedToken) {
+        setError('Invalid token, please log in again');
+        return;
+      }
 
       try {
         // Fetch user information
-        const userResponse = await fetch('http://localhost:3001/api/user', {
+        const userResponse = await fetch('http://localhost:3001/api/user/'+decodedToken._id, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`, // Send token in headers
           },
         });
-
+console.log(userResponse);
         if (!userResponse.ok) {
           throw new Error('Failed to fetch user data');
         }
 
         const userData = await userResponse.json();
+        console.log(userData);
         setUser(userData);
-
-        // Fetch bugs data
-        const bugsResponse = await fetch('http://localhost:3001/api/bugs', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`, // Send token in headers
-          },
-        });
-
-        if (!bugsResponse.ok) {
-          throw new Error('Failed to fetch bugs data');
-        }
-
-        const bugsData = await bugsResponse.json();
-        setOngoingBugs(bugsData.filter((bug: any) => !bug.isSolved));
-        setSolvedBugs(bugsData.filter((bug: any) => bug.isSolved));
       } catch (error) {
-        setError('An error occurred. Please try again later.');
-        console.error(error);
+        setError('Failed to fetch user data');
       }
     };
 
     fetchData();
   }, []);
 
-  // Counts
-  const ongoingCount = ongoingBugs.length;
-  const solvedCount = solvedBugs.length;
-
-  const deleteBug = (bugId: number, isOngoing: boolean): void => {
-    if (isOngoing) {
-      setOngoingBugs(ongoingBugs.filter(bug => bug.id !== bugId));
-    } else {
-      setSolvedBugs(solvedBugs.filter(bug => bug.id !== bugId));
-    }
-  };
 
   if (error) {
     return <div className="text-center text-red-500">{error}</div>;
@@ -86,8 +81,8 @@ const UserDashboard = () => {
 
           {/* Bug Counts */}
           <div className="mt-8">
-            <p className="text-lg text-yellow-400">Ongoing Bugs: {ongoingCount}</p>
-            <p className="text-lg text-yellow-400">Solved Bugs: {solvedCount}</p>
+            <p className="text-lg text-yellow-400">Ongoing Bugs: </p>
+            <p className="text-lg text-yellow-400">Solved Bugs: </p>
           </div>
         </div>
 
@@ -108,25 +103,20 @@ const UserDashboard = () => {
           <div>
             <h3 className="text-2xl font-semibold text-yellow-300 mb-4">Ongoing Bugs</h3>
             <div className="space-y-6 max-h-80 overflow-y-auto">
-              {ongoingBugs.map((bug) => (
                 <div
-                  key={bug.id}
                   className="bg-gray-800 p-6 rounded-xl shadow-lg hover:bg-gray-700 transition-all"
                 >
                   <div className="flex justify-between items-center">
-                    <Link to={`/bug/${bug.id}`} className="text-xl font-semibold text-yellow-400">
-                      {bug.title}
+                    <Link to={`/bug`} className="text-xl font-semibold text-yellow-400">
                     </Link>
                     <button
-                      onClick={() => deleteBug(bug.id, true)}
                       className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-400"
                     >
                       Delete
                     </button>
                   </div>
-                  <p className="text-gray-400 text-lg">{bug.description}</p>
+                  <p className="text-gray-400 text-lg"></p>
                 </div>
-              ))}
             </div>
           </div>
 
@@ -134,25 +124,20 @@ const UserDashboard = () => {
           <div>
             <h3 className="text-2xl font-semibold text-yellow-300 mb-4">Solved Bugs</h3>
             <div className="space-y-6 max-h-80 overflow-y-auto">
-              {solvedBugs.map((bug) => (
                 <div
-                  key={bug.id}
                   className="bg-gray-800 p-6 rounded-xl shadow-lg hover:bg-gray-700 transition-all"
                 >
                   <div className="flex justify-between items-center">
-                    <Link to={`/bug/${bug.id}`} className="text-xl font-semibold text-yellow-400">
-                      {bug.title}
+                    <Link to={`/bug`} className="text-xl font-semibold text-yellow-400">
                     </Link>
                     <button
-                      onClick={() => deleteBug(bug.id, false)}
                       className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-400"
                     >
                       Delete
                     </button>
                   </div>
-                  <p className="text-gray-400 text-lg">{bug.description}</p>
+                  <p className="text-gray-400 text-lg"></p>
                 </div>
-              ))}
             </div>
           </div>
         </div>
