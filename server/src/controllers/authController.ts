@@ -24,6 +24,9 @@ export const login = async (req: Request, res: Response) => {
 
 export const getUser = async (req: Request, res: Response) => {
     try {
+        if (!req.user || !req.user._id) {
+            return res.status(401).json({ message: "Unauthorized, invalid token" });
+        }
         const { id } = req.params;
         const user = await User.findById(id).select('-password'); // Exclude password
         if (!user) {

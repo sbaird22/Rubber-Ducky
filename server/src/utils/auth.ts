@@ -1,38 +1,53 @@
-import jwt from 'jsonwebtoken';
-import { GraphQLError } from 'graphql';
-import dotenv from 'dotenv';
+import jwt, { Jwt, JwtPayload } from "jsonwebtoken";
+import { Request, Response, NextFunction } from "express";
+
+// Extend the Request interface to include the user property
+declare module "express-serve-static-core" {
+    interface Request {
+        user?: { _id: string; username: string; email: string };
+    }
+}
+import dotenv from "dotenv";
+
 dotenv.config();
 
-export const signToken = (username: string, email: string, _id: unknown) => {
+const secretKey: string = process.env.JWT_SECRET || "default_secret";
+
+export const signToken = (username: string, email: string, _id: string) => {
     const payload = { username, email, _id };
-    const secretKey: any = process.env.JWT_SECRET_KEY;
-    return jwt.sign({data: payload}, secretKey, {expiresIn: '1h'});
+    return jwt.sign(payload, secretKey, { expiresIn: "1h" });
 };
 
-const secretKey: string = process.env.JWT_SECRET || 'default_secret';
-
-export const authenticateToken = ({req}: any) => {
+export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
     let token = req.body.token || req.query.token || req.headers.authorization;
-    if(req.headers.authorization){
-        token = token.split(' ').pop().trim();
-    };
-    if(!token){
-        return req;
+
+    // Extract token from 'Bearer TOKEN' format
+    if (req.headers.authorization) {
+    token = token.split(" ").pop().trim();
     }
-    try{
-        const {data}: any = jwt.verify(token, secretKey);
-        req.user = data;
-    }catch (err) {
-        console.log('Invalid Token.');
+
+    if (!token) {
+    return res.status(403).json({ message: "Access denied, token missing" });
     }
-    return req;
+
+    try {
+    const decoded = jwt.verify(token, secretKey) as JwtPayload & {_id:string};
+    const { _id, username, email } = decoded;
+    if (_id && username && email) {
+        req.user = { _id, username, email }; // Attach decoded user data to request
+        next(); // Proceed to next middleware
+    } else {
+        return res.status(401).json({ message: "Invalid Token" });
+    }
+    next(); // Proceed to next middleware
+    } catch (err) {
+    return res.status(401).json({ message: "Invalid Token" });
+    }
 };
 
-export class AuthenticationError extends GraphQLError {
+export class AuthenticationError extends Error {
     constructor(message: string) {
-        super(message, undefined, undefined, undefined, ['UNAUTHENITCATED']);
-        Object.defineProperty(this, 'name', {value: 'AuthenticationError'})
+    super(message);
+    this.name = "AuthenticationError";
     }
-};
-
-// If we want to add refresh tokens we will need to extend this file
+}

@@ -13,7 +13,7 @@ const UserDashboard = () => {
   const [user, setUser] = useState<any>(null);
   const [error, setError] = useState<string>('');
 
-  const getProfile = () => {
+  const getProfile = (): DecodedToken | null => {
     const token = localStorage.getItem("token");
     if (!token) return null;
     try {
@@ -33,14 +33,15 @@ const UserDashboard = () => {
         return;
       }
       const decodedToken = getProfile();
-      if (!decodedToken) {
+      if (!decodedToken || !decodedToken._id) {
         setError('Invalid token, please log in again');
         return;
       }
 
       try {
         // Fetch user information
-        const userResponse = await fetch('http://localhost:3001/api/user/'+decodedToken._id, {
+        const userResponse = await fetch(`http://localhost:3001/api/auth/user`, {
+
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`, // Send token in headers

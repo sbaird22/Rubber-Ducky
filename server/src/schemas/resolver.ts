@@ -62,7 +62,7 @@ const resolvers = {
             // Create a new user with the provided details
             const user = await User.create({ ...input });
             // Sign a token with the user's info
-            const token = signToken(user.username, user.email, user._id);
+            const token = signToken(user.username, user.email, String(user._id));
             // Return the token and user
             return { token, user };
         },
@@ -81,7 +81,7 @@ const resolvers = {
                 throw new AuthenticationError('Could not authenticate user.');
             }
             // Sign a token with user info
-            const token = signToken(user.username, user.email, user._id);
+            const token = signToken(user.username, user.email, String(user._id));
             // Return token & user
             return { token, user };
         },
