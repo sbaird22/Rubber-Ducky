@@ -17,8 +17,8 @@ export default [
     },
     settings: {
       react: {
-        version: "detect" // Automatically detects React version
-      }
+        version: "detect", // Auto-detect React version
+      },
     },
     rules: {
       ...react.configs.recommended.rules,
@@ -27,6 +27,6 @@ export default [
       "react/jsx-uses-vars": "error",
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
-    }
-  }
+    },
+  },
 ];

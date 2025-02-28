@@ -12,7 +12,7 @@
     "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
     "serve": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "cd server && npm i && cd ../client && i",
+    "install": "cd server && npm install && cd ../client && npm install",
     "seed": "cd server && npm run seed",
     "render-build": "npm install && npm run build && npm run seed"
   },
@@ -58,6 +58,7 @@
     "concurrently": "^7.6.0",
     "eslint": "^9.21.0",
     "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^5.1.0",
     "globals": "^16.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3",
