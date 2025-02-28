@@ -7,7 +7,7 @@ import tsParser from '@typescript-eslint/parser';
 
 export default [
   {
-    ignores: ['dist'], // Ignore dist folder
+    ignores: ['dist', 'client/vite.config.ts'], // Ignore dist folder
   },
   {
     // Target TypeScript files

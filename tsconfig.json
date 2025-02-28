@@ -28,13 +28,14 @@
     "include": [
       "server/src/**/*.ts",
       "client/src/**/*.ts",
-      "client/src/**/*.tsx"
+      "client/src/**/*.tsx",
     ],
     "exclude": [
       "node_modules",
       "dist",
       "server/dist",
       "client/dist",
-      "client/build"
+      "client/build",
+      "client/vite.config.ts" // Add vite.config.ts explicitly
     ]
   }
