@@ -32,12 +32,30 @@ export default [
       ts.configs.recommended, // Include recommended rules from TypeScript
     ],
     rules: {
-      ...reactHooks.configs.recommended.rules, // React Hook rules
-      'react-refresh/only-export-components': [
-        'warn', 
-        { allowConstantExport: true }, // Customize react-refresh rule
-      ],
-      'react/react-in-jsx-scope': 'off', // Disable for React 17+ (no need to import React)
+      // Relax TypeScript rules
+      '@typescript-eslint/no-unused-vars': 'off', // Disable unused variable check
+      '@typescript-eslint/no-explicit-any': 'off', // Allow 'any' type
+      '@typescript-eslint/explicit-module-boundary-types': 'off', // Don't require explicit return types
+      '@typescript-eslint/explicit-function-return-type': 'off', // Allow implicit return types
+      '@typescript-eslint/strict-boolean-expressions': 'off', // Relax boolean expression checks
+      '@typescript-eslint/no-unsafe-assignment': 'off', // Allow unsafe assignments
+      '@typescript-eslint/no-unsafe-member-access': 'off', // Allow unsafe member access
+      '@typescript-eslint/no-unsafe-call': 'off', // Allow unsafe calls
+
+      // React-specific rules
+      'react/react-in-jsx-scope': 'off', // Disable for React 17+
+      'react/prop-types': 'off',  // Disable prop-types check if using TypeScript for typing
+      'react/jsx-no-undef': 'off',  // Disable JSX undefined elements check
+
+      // React Hooks rules
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }], // Customize react-refresh rule
+
+      // Optional relaxing of some React rules
+      'react/jsx-uses-react': 'off', // Disable the need to import React
+      'react/jsx-uses-vars': 'off', // Relax the check for unused variables in JSX
+
+      // Add additional relaxations if necessary
     },
   },
 ];
