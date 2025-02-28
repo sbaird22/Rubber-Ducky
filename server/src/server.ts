@@ -7,6 +7,7 @@ import authRoutes from './routes/authRoutes.js';
 import chatRoutes from './routes/chatRoutes.js';
 import { typeDefs, resolvers } from './schemas/index.js';
 import connectDB from './config/db.js';
+import bugRoutes from './routes/bugRoutes.js';
 
 dotenv.config();
 
@@ -27,13 +28,15 @@ const startApolloServer = async () => {
 
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());  // Middleware to parse JSON bodies
-
+  
   app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST'],
+    origin: 'http://localhost:4173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
   }));
-
+  
+  app.use('/api/bugs', bugRoutes); // Mount the bug routes
   app.use('/api/auth', authRoutes);  // Mount the authentication routes
   app.use('/api/generateText', chatRoutes);
 
