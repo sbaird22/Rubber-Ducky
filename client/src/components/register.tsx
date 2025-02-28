@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Import the Link component from react-router-dom
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -10,18 +11,18 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
     }
-  
+
     const userData = {
       username,
       email,
       password
     };
-  
+
     try {
       const response = await fetch('http://localhost:3001/api/auth/register', {
         method: 'POST',
@@ -30,16 +31,14 @@ const Register = () => {
         },
         body: JSON.stringify(userData),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         console.log('Registration successful:', data);
         // Store the JWT in localStorage
         localStorage.setItem('token', data.token);
-        navigate('/dashboard');
-        // Optionally, redirect the user to the login page or a protected route
-        // window.location.href = '/dashboard'; // example redirect
+        navigate('/dashboard'); // Navigate to the dashboard upon successful registration
       } else {
         console.error('Registration failed:', data.message);
         alert(data.message);
@@ -49,7 +48,6 @@ const Register = () => {
       alert('An error occurred. Please try again later.');
     }
   };
-  
 
   return (
     <section className="bg-gray-900 text-white p-16">
@@ -114,7 +112,10 @@ const Register = () => {
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-gray-400 text-lg">Already have an account? <a href="/login" className="text-yellow-300">Login</a></p>
+          <p className="text-gray-400 text-lg">
+            Already have an account? 
+            <Link to="/login" className="text-yellow-300"> Login</Link> {/* Updated with Link */}
+          </p>
         </div>
       </div>
     </section>
