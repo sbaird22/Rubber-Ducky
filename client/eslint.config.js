@@ -27,10 +27,6 @@ export default [
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
     },
-    extends: [
-      js.configs.recommended, 
-      ts.configs.recommended, // Include recommended rules from TypeScript
-    ],
     rules: {
       // Relax TypeScript rules
       '@typescript-eslint/no-unused-vars': 'off', // Disable unused variable check
@@ -57,5 +53,13 @@ export default [
 
       // Add additional relaxations if necessary
     },
+  },
+  {
+    // Including recommended TypeScript rules manually
+    plugin: ts.configs.recommended,
+  },
+  {
+    // Including recommended JavaScript rules manually
+    plugin: js.configs.recommended,
   },
 ];
