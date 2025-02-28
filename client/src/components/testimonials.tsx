@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+// import { Link } from 'react-router-dom'; Import Link from react-router-dom
 
 const Testimonials = () => {
   return (
@@ -6,7 +6,7 @@ const Testimonials = () => {
       <div className="container mx-auto text-center">
         <h2 className="text-4xl font-extrabold text-yellow-400 mb-8">What Our Users Say</h2>
 
-        {/* Add the link to the submit testimonial page */}
+        {/* Add the link to the submit testimonial page
         <div className="mb-8">
           <Link
             to="/testimonials" // Link to the testimonial submission page
@@ -14,7 +14,7 @@ const Testimonials = () => {
           >
             Submit Your Testimonial
           </Link>
-        </div>
+        </div> */}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           

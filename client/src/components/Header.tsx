@@ -35,7 +35,10 @@ const Header = () => {
           <Link to="/" className="text-lg hover:text-yellow-300">Home</Link>
           <Link to="/contact" className="text-lg hover:text-yellow-300">Contact</Link>
 
-          {/* Conditionally render Login/Register or Logout */}
+          {/* Conditionally render Dashboard, Login/Register, or Logout */}
+          {isLoggedIn && (
+            <Link to="/dashboard" className="text-lg hover:text-yellow-300">Dashboard</Link>
+          )}
           {!isLoggedIn ? (
             <>
               <Link to="/login" className="text-lg hover:text-yellow-300">Login</Link>
@@ -63,10 +66,12 @@ const Header = () => {
       <div className={`md:hidden ${isOpen ? 'block' : 'hidden'} bg-gray-800 text-white py-4`}>
         <div className="flex flex-col items-center">
           <Link to="/" className="py-2 hover:text-yellow-300">Home</Link>
-          <Link to="/about" className="py-2 hover:text-yellow-300">About</Link>
           <Link to="/contact" className="py-2 hover:text-yellow-300">Contact</Link>
 
-          {/* Mobile Login and Register Links or Logout Button */}
+          {/* Conditionally render Dashboard, Login/Register, or Logout */}
+          {isLoggedIn && (
+            <Link to="/dashboard" className="py-2 hover:text-yellow-300">Dashboard</Link>
+          )}
           {!isLoggedIn ? (
             <>
               <Link to="/login" className="py-2 hover:text-yellow-300">Login</Link>
