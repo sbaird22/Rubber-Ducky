@@ -5,7 +5,7 @@ export { default as Contact } from './contact';
 export { default as Testimonials } from './SubmitTestimonialPage';
 export { default as UserDashboard } from './userDashboard';
 export { default as Bug } from './bug';
-
+export { default as SubmitBug } from './submitBug';
 
 
 

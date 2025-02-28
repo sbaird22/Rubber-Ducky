@@ -96,7 +96,7 @@ console.log(userResponse);
             <h3 className="text-3xl font-semibold text-yellow-300">Your Bugs</h3>
             {/* Link to Add New Bug */}
             <Link
-              to="/bug"
+              to="/submitbug"
               className="bg-yellow-400 text-gray-800 px-6 py-2 rounded-lg text-xl hover:bg-yellow-300"
             >
               Add New Bug
