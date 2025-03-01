@@ -1,14 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaTrashAlt, FaEdit } from 'react-icons/fa';
 import RubberDuckyImg from '../assets/Rubber_Ducky.png';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
+
 
 const BugPage = () => {
+  const { bugId } = useParams<{ bugId: string }>();
   const [notes, setNotes] = useState<string[]>([]);
   const [newNote, setNewNote] = useState('');
   const [aiResponse, setAiResponse] = useState<string>('');
   const [aiQuery, setAiQuery] = useState<string>('');
   const [isListening, setIsListening] = useState<boolean>(false);
+  
+  useEffect(() => {
+    if (!bugId) return;
+  
+    const fetchBugDetails = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/bugs/${bugId}`, {
+          headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to fetch bug details');
+        }
+  
+        const bugData = await response.json();
+        console.log("Bug details:", bugData);
+        // Set the bug details to state if needed
+      } catch (error) {
+        console.error("Error fetching bug details:", error);
+      }
+    };
+  
+    fetchBugDetails();
+  }, [bugId]);
+  
 
   // Function to handle Speech Input and AI Response
   const handleVoiceInput = () => {
