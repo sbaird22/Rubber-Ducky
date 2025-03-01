@@ -42,3 +42,21 @@ export const getBug = async (req: Request, res: Response) => {
         return res.status(500).json({ message: "Server error" });
     }
 };
+
+export const deleteBug = async (req: Request, res: Response) => {
+    try {
+        const bugId = req.params.bugId; // Get bug ID from request parameters
+        if (!bugId) {
+            return res.status(401).json({ message: "Bad request: No bug ID provided" });
+        }
+        const bug = await Bug.findByIdAndDelete(bugId);
+        if (!bug) {
+            return res.status(404).json({ message: "Bug not found" });
+        }
+
+        return res.status(200).json({ message: "Bug deleted successfully" });
+    } catch (err) {
+        console.error("Error deleting bug:", err);
+        return res.status(500).json({ message: "Server error" });
+    }
+};

@@ -107,6 +107,25 @@ console.log(userResponse);
     return <div>Loading...</div>; // Show loading state while fetching data
   }
 
+  const handleDelete = async (bugId: string) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/bugs/${bugId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type":"application/json"
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete bug');
+      }
+      setBugs((prevBugs) => prevBugs.filter((bug) => bug._id !== bugId));
+    } catch (error) {
+      console.error('Error deleting bug:', error);
+    }
+  };
+
   return (
     <section className="py-16 bg-gray-900 text-white">
       <div className="container mx-auto flex flex-col lg:flex-row space-y-16 lg:space-y-0 lg:space-x-16">
@@ -148,7 +167,7 @@ console.log(userResponse);
                     <Link to={`/bug/${bug._id}`} className="text-xl font-semibold text-yellow-400">
                       {bug.title}
                     </Link>
-                    <button className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-400">
+                    <button onClick={() => handleDelete(bug._id)} className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-400">
                       Delete
                     </button>
                   </div>
