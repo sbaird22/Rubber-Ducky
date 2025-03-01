@@ -20,18 +20,19 @@ export const signToken = (username: string, email: string, _id: string) => {
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
     let token = req.body.token || req.query.token || req.headers.authorization;
-
+    console.log("🔹 Received Auth Header:", req.headers.authorization);
     // Extract token from 'Bearer TOKEN' format
     if (req.headers.authorization) {
     token = token.split(" ").pop().trim();
     }
-
+    console.log("🔹 Extracted Token:", token);
     if (!token) {
     return res.status(403).json({ message: "Access denied, token missing" });
     }
 
     try {
     const decoded = jwt.verify(token, secretKey) as JwtPayload & {_id:string};
+    console.log("✅ Decoded Token:", decoded);
     const { _id, username, email } = decoded;
     if (_id && username && email) {
         req.user = { _id, username, email }; // Attach decoded user data to request
