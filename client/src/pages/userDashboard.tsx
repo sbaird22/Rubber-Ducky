@@ -41,7 +41,8 @@ const UserDashboard = () => {
       if (!token) return;
   
       const response = await fetch(`/api/bugs/user/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}`, "Content-Type":"application/json" },
+        credentials: 'include',
       });
       console.log("Response:", response);
       if (!response.ok) {
