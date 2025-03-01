@@ -4,15 +4,26 @@ import RubberDuckyImg from '../assets/Rubber_Ducky.png';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
+interface BugData{
+  _id: string;
+  title: string;
+  bugDescription: string;
+  createdBy: string;
+  notes: string[];
+}
 
 const BugPage = () => {
   const { bugId } = useParams<{ bugId: string }>();
+  const [bug, setBug] = useState<BugData | null>(null);
+
   const [notes, setNotes] = useState<string[]>([]);
   const [newNote, setNewNote] = useState('');
   const [aiResponse, setAiResponse] = useState<string>('');
   const [aiQuery, setAiQuery] = useState<string>('');
   const [isListening, setIsListening] = useState<boolean>(false);
   
+console.log("Bug ID:", bugId);
+
   useEffect(() => {
     if (!bugId) return;
   
@@ -28,6 +39,8 @@ const BugPage = () => {
         }
   
         const bugData = await response.json();
+        setBug(bugData);
+        setNotes(bugData.notes || []);
         console.log("Bug details:", bugData);
         // Set the bug details to state if needed
       } catch (error) {
@@ -95,12 +108,33 @@ const BugPage = () => {
     }
   };
 
-  const addNote = () => {
-    if (newNote) {
-      setNotes([...notes, newNote]);
-      setNewNote('');
+  const addNote = async () => {
+    if (!newNote) return;
+  
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/api/bugs/${bugId}/note`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ note: newNote }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to save note");
+      }
+  
+      const updatedBug = await response.json();
+      setBug(updatedBug.bug); // Update bug state with new note
+      setNotes([...notes, newNote]); // Update notes state
+      setNewNote(''); // Clear input field
+    } catch (error) {
+      console.error("Error saving note:", error);
     }
   };
+  
 
   const deleteNote = (index: number) => {
     setNotes(notes.filter((_, i) => i !== index));
@@ -196,7 +230,15 @@ const BugPage = () => {
         {/* Right Section: Notes and Actions */}
         <div className="bg-gray-800 p-8 rounded-xl shadow-lg">
           <h3 className="text-2xl font-semibold text-yellow-400 mb-4">Your Bug Notes</h3>
-
+              {bug ?(
+                <div className ="mb-4 p-4 bg-gray-700 rounded-lg">
+      <h4 className="text-xl font-bold">{bug.title}</h4>
+      <p className="text-gray-300">{bug.bugDescription}</p>
+    </div>
+  ) : (
+    <p className="text-gray-400">Loading bug details...</p>
+  )}
+              
           <div className="flex space-x-4 mb-8">
             <input
               type="text"
