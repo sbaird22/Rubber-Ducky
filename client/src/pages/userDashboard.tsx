@@ -136,8 +136,7 @@ console.log(userResponse);
 
           {/* Bug Counts */}
           <div className="mt-8">
-            <p className="text-lg text-yellow-400">Ongoing Bugs: </p>
-            <p className="text-lg text-yellow-400">Solved Bugs: </p>
+            <p className="text-lg text-yellow-400">Bugs: {bugs.length}</p>
           </div>
         </div>
 
@@ -156,7 +155,6 @@ console.log(userResponse);
 
           {/* Ongoing Bugs */}
           <div>
-            <h3 className="text-2xl font-semibold text-yellow-300 mb-4">Ongoing Bugs</h3>
             <div className="space-y-6 max-h-80 overflow-y-auto">
             {bugs.filter(bug => bug.status !== "solved").length === 0 ? (
               <p className="text-gray-400">No ongoing bugs</p>
@@ -180,26 +178,6 @@ console.log(userResponse);
             </div>
           </div>
 
-          {/* Solved Bugs */}
-          <div>
-            <h3 className="text-2xl font-semibold text-yellow-300 mb-4">Solved Bugs</h3>
-            <div className="space-y-6 max-h-80 overflow-y-auto">
-                <div
-                  className="bg-gray-800 p-6 rounded-xl shadow-lg hover:bg-gray-700 transition-all"
-                >
-                  <div className="flex justify-between items-center">
-                    <Link to={`/bug`} className="text-xl font-semibold text-yellow-400">
-                    </Link>
-                    <button
-                      className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-400"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                  <p className="text-gray-400 text-lg"></p>
-                </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
