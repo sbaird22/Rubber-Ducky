@@ -70,7 +70,7 @@ Ensure you have the following installed:
 4. **Store notes** and track your debugging history.
 
 ## License
-
+![License](https://img.shields.io/badge/License-MIT-yellow.svg "License")
 This project is licensed under the MIT License.
 
 ## Collaborators
