@@ -14,6 +14,7 @@ interface IBug extends Document {
     createdAt: Date,
     createdBy: string,
     attempts: IAttempt[],
+    notes: string[],
 }
 
 // Defining the schema for the Attempt subdocument
@@ -61,6 +62,11 @@ const bugSchema = new Schema<IBug>(
             trim: true,
         },
         attempts: [attemptSchema],
+        notes: [
+            {type: String,
+            trim: true,
+            },
+        ],
     },
 );
 
