@@ -8,6 +8,7 @@ import chatRoutes from './routes/chatRoutes.js';
 import { typeDefs, resolvers } from './schemas/index.js';
 import connectDB from './config/db.js';
 import bugRoutes from './routes/bugRoutes.js';
+import { Request, Response } from 'express';
 
 dotenv.config();
 
@@ -45,7 +46,7 @@ const startApolloServer = async () => {
 
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/dist')));
-    app.get('*', (_req, res) => {
+    app.get('*', (_req: Request, res: Response) => {
       res.sendFile(path.join(__dirname, '../client/dist/index.html'));
     });
   }
