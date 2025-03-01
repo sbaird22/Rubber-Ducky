@@ -7,11 +7,18 @@ interface DecodedToken extends JwtPayload {
   username: string;
   email: string;
 }
+interface Bug {
+  _id: string;
+  title: string;
+  bugDescription: string;
+  status: string;
+}
 
 const UserDashboard = () => {
   // State to hold user data, bugs, and error
   const [user, setUser] = useState<any>(null);
   const [error, setError] = useState<string>('');
+  const [bugs, setBugs] = useState<Bug[]>([]);
 
   const getProfile = (): DecodedToken | null => {
     console.log("getProfile called");
@@ -26,6 +33,29 @@ const UserDashboard = () => {
       return null;
     }
   }
+
+  const fetchBugs = async (userId: string) => {
+    try {
+      const token = localStorage.getItem('token');
+      console.log("Token found:", token);
+      if (!token) return;
+  
+      const response = await fetch(`/api/bugs/user/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log("Response:", response);
+      if (!response.ok) {
+        throw new Error("Failed to fetch bugs");
+      }
+  
+      const bugsData = await response.json();
+      console.log("Fetched bugs:", bugsData);
+      setBugs(bugsData); // Store fetched bugs in state
+    } catch (error) {
+      console.error("Error fetching bugs:", error);
+    }
+  };
+  
   
 
   useEffect(() => {
@@ -43,7 +73,7 @@ const UserDashboard = () => {
 
       try {
         // Fetch user information
-        const userResponse = await fetch(`http://localhost:3001/api/auth/user/${decodedToken._id}`, {
+        const userResponse = await fetch(`/api/auth/user/${decodedToken._id}`, {
 
           method: 'GET',
           headers: {
@@ -58,6 +88,7 @@ console.log(userResponse);
         const userData = await userResponse.json();
         console.log(userData);
         setUser(userData);
+        fetchBugs(decodedToken._id); // Fetch bugs for the user
       } catch (error) {
         setError('Failed to fetch user data');
       }
@@ -107,20 +138,25 @@ console.log(userResponse);
           <div>
             <h3 className="text-2xl font-semibold text-yellow-300 mb-4">Ongoing Bugs</h3>
             <div className="space-y-6 max-h-80 overflow-y-auto">
-                <div
-                  className="bg-gray-800 p-6 rounded-xl shadow-lg hover:bg-gray-700 transition-all"
-                >
+            {bugs.filter(bug => bug.status !== "solved").length === 0 ? (
+              <p className="text-gray-400">No ongoing bugs</p>
+            ) : (
+              bugs.filter((bug: Bug) => bug.status !== "solved").map((bug: Bug) => (
+                <div key={bug._id} className="bg-gray-800 p-6 rounded-xl shadow-lg hover:bg-gray-700 transition-all">
                   <div className="flex justify-between items-center">
-                    <Link to={`/bug`} className="text-xl font-semibold text-yellow-400">
+                    <Link to={`/bug/${bug._id}`} className="text-xl font-semibold text-yellow-400">
+                      {bug.title}
                     </Link>
-                    <button
-                      className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-400"
-                    >
+                    <button className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-400">
                       Delete
                     </button>
                   </div>
-                  <p className="text-gray-400 text-lg"></p>
+                    <p className="text-gray-400 text-lg">{bug.bugDescription}</p>
                 </div>
+  ))
+)}
+
+                
             </div>
           </div>
 

@@ -27,7 +27,7 @@ export const addBug = async (req: Request, res: Response) => {
 
 export const getBug = async (req: Request, res: Response) => {
     try {
-        const userId = req.user?._id; // Get bug ID from request parameters
+        const userId = req.params.userId; // Get bug ID from request parameters
         if (!userId) {
             return res.status(401).json({ message: "Bad request: No user ID provided" });
         }

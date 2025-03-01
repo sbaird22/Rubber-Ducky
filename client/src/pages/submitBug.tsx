@@ -47,7 +47,7 @@ const AddBugForm = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/api/bugs", {
+      const response = await fetch("/api/bugs", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -73,9 +73,9 @@ const AddBugForm = () => {
       const token = localStorage.getItem("token");
       if (!token) return;
   
-      let url = "http://localhost:3001/api/bugs";
+      let url = "/api/bugs/user";
       if (bugId) {
-        url = `http://localhost:3001/api/bugs/user`; // Fetch specific bug if ID is provided
+        url = `/api/bugs/user`; // Fetch specific bug if ID is provided
       }
   
       const response = await fetch(url, {
