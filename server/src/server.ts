@@ -1,6 +1,6 @@
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
-import path from 'node:path';
+import path from 'path';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
@@ -9,6 +9,10 @@ import { typeDefs, resolvers } from './schemas/index.js';
 import connectDB from './config/db.js';
 import bugRoutes from './routes/bugRoutes.js';
 import { Request, Response } from 'express';
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
