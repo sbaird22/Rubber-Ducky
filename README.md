@@ -16,6 +16,7 @@ so that I can debug my code more efficiently and document my progress.
 - The AI provides relevant debugging suggestions based on user input.
 - Users can store, edit, and track their debugging notes.
 - The system ensures secure authentication using JWT.
+- The frontend and backend communicate seamlessly using GraphQL.
 
 ## Features
 
@@ -23,6 +24,7 @@ so that I can debug my code more efficiently and document my progress.
 - **AI-Powered Debugging**: Dolphin3.0 provides intelligent responses and troubleshooting assistance. [Screenshot](https://i.postimg.cc/HkL9385w/duck5.jpg)
 - **User Notes & Problem Tracking**: Developers can document their debugging process. [Screenshot](https://i.postimg.cc/W1f6yp6Q/duck6.jpg)
 - **Secure Authentication**: JWT-based authentication ensures personalized experiences. [Screenshot](https://i.postimg.cc/9XYXVJgB/duck7.jpg)
+- **GraphQL API**: Efficient data fetching and updates.
 - **MERN Stack Implementation**: Uses MongoDB, Express, React, and Node.js.
 
 ## Tech Stack
@@ -31,11 +33,13 @@ so that I can debug my code more efficiently and document my progress.
 
 - **React + TypeScript** for a dynamic and type-safe UI.
 - **Tailwind CSS** for a responsive and stylish front-end [Screenshot](https://i.postimg.cc/W3ZngRZx/duck1.jpg)
+- **GraphQL Client** to fetch and manage data.
 
 ### Backend:
 
 - **Node.js + Express** to manage API routes and authentication.
 - **OpenAI API Integration** for AI-powered responses.
+- **GraphQL Server** for efficient data retrieval and mutations.
 - **Web speech API** for voice input.
 - **Speech Synthesis API** to read the AI response
 
