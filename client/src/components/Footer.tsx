@@ -29,7 +29,7 @@ const Footer = () => {
               <a href="https://github.com/this-is-yosuke" target="_blank" rel="noopener noreferrer" className="text-yellow-400 hover:text-yellow-300">
                 <FaGithub size={24} />
               </a>
-              <a href="https://linkedin.com/in/your-linkedin-username2" target="_blank" rel="noopener noreferrer" className="text-yellow-400 hover:text-yellow-300">
+              <a href="https://www.linkedin.com/in/yosuke-k-81677a198/" target="_blank" rel="noopener noreferrer" className="text-yellow-400 hover:text-yellow-300">
                 <FaLinkedin size={24} />
               </a>
             </div>
