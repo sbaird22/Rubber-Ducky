@@ -14,7 +14,7 @@ const TestimonialForm = () => {
       if (token) {
         try {
           // Fetch user information using the token
-          const response = await axios.get('http://localhost:3001/api/user', {
+          const response = await axios.get('/api/user', {
             headers: {
               Authorization: `Bearer ${token}`,
             },
