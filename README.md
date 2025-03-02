@@ -5,6 +5,18 @@
 The **Rubber Duck Debugging AI Tool** is designed to help developers troubleshoot their code by explaining their issues out loud. Using **speech-to-text** and **AI-powered feedback (Dolphin3.0)**, developers can receive guidance while maintaining a **MERN stack architecture**. The tool also provides a space to store problems, notes, and attempted fixes.
 [Screenshot](https://i.postimg.cc/59wgtVbC/duck2.jpg)
 
+## User Story
+### As a developer,
+I want to explain my coding issues out loud and receive AI-powered guidance,
+so that I can debug my code more efficiently and document my progress.
+
+## Acceptance Criteria
+- The user can input their coding issues via speech or text.
+- The system converts spoken input into text accurately.
+- The AI provides relevant debugging suggestions based on user input.
+- Users can store, edit, and track their debugging notes.
+- The system ensures secure authentication using JWT.
+
 ## Features
 
 - **Speech-to-Text Support**: Converts spoken explanations into text for processing. [Screenshot](https://i.postimg.cc/HkL9385w/duck5.jpg)
