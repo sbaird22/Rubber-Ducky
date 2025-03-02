@@ -62,6 +62,26 @@ export const addNoteToBug = async (req: Request, res: Response) => {
     }
 };
 
+export const editNoteToBug = async (req: Request, res: Response) => {
+    try {
+        const { bugId } = req.params;
+        const { index, newNote } = req.body; 
+        if (typeof index !== "number" || !newNote) {
+        return res.status(400).json({ message: "Invalid request data" });
+        }
+        const bug = await Bug.findById(bugId);
+        if (!bug) {
+        return res.status(404).json({ message: "Bug not found" });
+        }
+        bug.notes[index] = newNote;
+        await bug.save();
+        res.status(200).json({ message: "Note updated successfully", bug });
+        } catch (error) {
+        console.error("Error updating note:", error);
+        res.status(500).json({ message: "Server error", error });
+        }
+};
+
 
 export const deleteBug = async (req: Request, res: Response) => {
     try {

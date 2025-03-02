@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { FaTrashAlt, FaEdit } from 'react-icons/fa';
 import RubberDuckyImg from '../assets/Rubber_Ducky.png';
 import axios from 'axios';
@@ -15,41 +15,47 @@ interface BugData{
 const BugPage = () => {
   const { bugId } = useParams<{ bugId: string }>();
   const [bug, setBug] = useState<BugData | null>(null);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editedNote, setEditedNote] = useState<string>("");
 
   const [notes, setNotes] = useState<string[]>([]);
   const [newNote, setNewNote] = useState('');
   const [aiResponse, setAiResponse] = useState<string>('');
   const [aiQuery, setAiQuery] = useState<string>('');
   const [isListening, setIsListening] = useState<boolean>(false);
+
+
+
   
 console.log("Bug ID:", bugId);
 
-  useEffect(() => {
-    if (!bugId) return;
-  
-    const fetchBugDetails = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`/api/bugs/${bugId}`, {
-          headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-        });
-  
-        if (!response.ok) {
-          throw new Error('Failed to fetch bug details');
-        }
-  
-        const bugData = await response.json();
-        setBug(bugData);
-        setNotes(bugData.notes || []);
-        console.log("Bug details:", bugData);
-        // Set the bug details to state if needed
-      } catch (error) {
-        console.error("Error fetching bug details:", error);
-      }
-    };
-  
-    fetchBugDetails();
-  }, [bugId]);
+
+const fetchBugDetails = useCallback (async () => {
+  if (!bugId) return;
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`/api/bugs/${bugId}`, {
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch bug details');
+    }
+    
+    const bugData = await response.json();
+    setBug(bugData);
+    setNotes(bugData.notes || []);
+    console.log("Bug details:", bugData);
+    // Set the bug details to state if needed
+  } catch (error) {
+    console.error("Error fetching bug details:", error);
+  }
+},
+[bugId]);
+
+useEffect(() => {
+  fetchBugDetails();
+},[fetchBugDetails]);
   
 
   // Function to handle Speech Input and AI Response
@@ -134,6 +140,40 @@ console.log("Bug ID:", bugId);
       console.error("Error saving note:", error);
     }
   };
+
+  const updateNote = async (index: number) => {
+    if (editedNote.trim() === "" || editingIndex === null) return;
+    
+    try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`/api/bugs/${bugId}/note`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ index, newNote: editedNote }),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to update note");
+        }
+
+        const updatedBug = await response.json();
+        const updatedNotes = [...notes];
+        updatedNotes[index] = editedNote;
+
+        setNotes(updatedNotes);
+        setBug(updatedBug);
+
+        setEditingIndex(null);
+        setEditedNote("");
+        fetchBugDetails();
+    } catch (error) {
+        console.error("Error updating note:", error);
+    }
+};
+
   
 
   const deleteNote = (index: number) => {
@@ -256,13 +296,30 @@ console.log("Bug ID:", bugId);
           </div>
 
           <div className="space-y-4">
-            {notes.length > 0 ? (
+            {notes && notes.length > 0 ? (
               notes.map((note, index) => (
                 <div
                   key={index}
                   className="flex justify-between items-center bg-gray-700 p-6 rounded-lg shadow-xl transform hover:scale-105 transition-all duration-300"
                 >
+                  {editingIndex === index ? (
+                    <div className="flex items-center space-x-2">
+                    <input
+                    type="text"
+                    value={editedNote}
+                    onChange={(e) => setEditedNote(e.target.value)}
+                    className="w-full p-2 text-gray-900 rounded-lg"
+                  />
+                  <button
+                  onClick={() => updateNote(index)}
+                  className="bg-green-400 text-gray-800 px-4 py-2 rounded-lg text-xl hover:bg-green-300"
+                  >
+                    Save
+                  </button>
+                  </div>
+              ) : (
                   <div className="text-gray-300 text-lg">{note}</div>
+              )}
                   <div className="flex space-x-4">
                     <button
                       onClick={() => deleteNote(index)}
@@ -271,7 +328,10 @@ console.log("Bug ID:", bugId);
                       <FaTrashAlt size={20} />
                     </button>
                     <button
-                      onClick={() => alert('Edit functionality not yet implemented')}
+                      onClick={() => {
+                        setEditingIndex(index);
+                        setEditedNote(note);
+                      }}
                       className="text-yellow-400 hover:text-yellow-300"
                     >
                       <FaEdit size={20} />
