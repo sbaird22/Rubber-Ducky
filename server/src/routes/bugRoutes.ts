@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticateToken } from "../utils/auth.js";
-import { addBug, getBug, deleteBug, addNoteToBug } from "../controllers/bugController.js";
+import { addBug, getBug, deleteBug, addNoteToBug, editNoteToBug } from "../controllers/bugController.js";
 import Bug from "../models/Bug.js";
 
 const router = express.Router();
@@ -9,6 +9,8 @@ router.post("/", authenticateToken, addBug); // Ensure user is authenticated
 router.get("/user/:userId", authenticateToken, getBug);
 router.delete("/:bugId", authenticateToken, deleteBug);
 router.post("/:bugId/note", authenticateToken, addNoteToBug);
+router.put("/:bugId/note", authenticateToken, editNoteToBug);
+
 
 router.get("/:bugId", authenticateToken, async (req, res) => {
     try {
