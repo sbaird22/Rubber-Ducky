@@ -40,25 +40,32 @@ const AddBugForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
+    // Validate bug description length
+    if (bugDescription.length < 10) {
+      setError("Bug description must be at least 10 characters long.");
+      return;
+    }
+  
+    setError(""); // Clear previous errors
     const userId = getUserId();
     if (!userId) {
       return;
     }
-
+  
     try {
       const response = await fetch("/api/bugs", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Send token with request
+          Authorization: `Bearer ${localStorage.getItem("token")}`, 
         },
         body: JSON.stringify({ title: bugTitle, bugDescription, createdBy: userId }),
       });
-
+  
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
-
+  
       setSuccess("Bug submitted successfully!");
       setBugTitle(""); 
       setBugDescription(""); 

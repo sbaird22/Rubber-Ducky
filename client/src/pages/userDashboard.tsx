@@ -127,7 +127,7 @@ console.log(userResponse);
   };
 
   return (
-    <section className="py-16 bg-gray-900 text-white">
+    <section className="py-16 bg-gray-900 min-h-[75vh] text-white">
       <div className="container mx-auto flex flex-col lg:flex-row space-y-16 lg:space-y-0 lg:space-x-16">
         {/* User Info Section */}
         <div className="lg:w-1/3 bg-gray-800 p-8 rounded-xl shadow-lg">

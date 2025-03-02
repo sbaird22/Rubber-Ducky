@@ -12,6 +12,11 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (password.length < 8) {
+      alert('Passwords must be 8 characters');
+      return;
+    }
+
     if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
